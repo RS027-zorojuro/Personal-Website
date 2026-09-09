@@ -29,7 +29,7 @@ export const CARS = [
     tone: "Iconic · Aggressive · JDM · Night",
     description:
       "The R34 defined a generation of JDM culture. The final evolution of the Skyline GT-R line before the R35 era.",
-    glb: "/assets/cars/2002-nissan-skyline-gt-r-v-spec-ii-nur-r34/source/2002 Nissan Skyline GT-R V-Spec II Nur.glb",
+    glb: "assets/cars/2002-nissan-skyline-gt-r-v-spec-ii-nur-r34/source/2002 Nissan Skyline GT-R V-Spec II Nur.glb",
     accent: "steel",
     lengthUnits: 4.6,
     headingOffset: 0,
@@ -59,7 +59,7 @@ export const CARS = [
     tone: "Lightweight · Touge · Street · Initial D",
     description:
       "The lightweight FR layout that became synonymous with mountain-road driving. An icon of touge culture.",
-    glb: "/assets/cars/1985_toyota_sprinter_trueno_ae86_project_d.glb",
+    glb: "assets/cars/1985_toyota_sprinter_trueno_ae86_project_d.glb",
     accent: "amber",
     lengthUnits: 4.2,
     headingOffset: 0,
@@ -89,7 +89,7 @@ export const CARS = [
     tone: "Precision · Motorsport · Engineering · Technical",
     description:
       "Track-focused precision from Stuttgart. The GT3 RS represents the intersection of engineering and driving purity.",
-    glb: "/assets/cars/porsche_911_gt3_rs_992_23.glb",
+    glb: "assets/cars/porsche_911_gt3_rs_992_23.glb",
     accent: "vermilion",
     lengthUnits: 4.55,
     // This model is authored nose-along -Z, unlike the other two.

@@ -28,6 +28,15 @@ function copyAssets() {
 }
 
 export default defineConfig({
+  // GitHub Pages serves this repo as a project site at
+  // https://<user>.github.io/Personal-Website/ — every built asset URL
+  // needs that prefix there, or the deployed page 404s on its own JS/CSS/
+  // images. Locally, `npm run build` + `npm run preview` (and `npm run dev`)
+  // have no such prefix and need to stay at "/" — vite preview reports
+  // command:"serve" just like dev does, so branching on `command` here
+  // would silently break local preview. Only the CI workflow sets
+  // VITE_BASE_PATH, so local builds/previews are unaffected.
+  base: process.env.VITE_BASE_PATH || '/',
   plugins: [react(), copyAssets()],
   // The existing index.html is the entry point;
   // Vite injects the module script automatically.
