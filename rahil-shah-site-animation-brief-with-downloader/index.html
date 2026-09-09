@@ -1,0 +1,3055 @@
+<!DOCTYPE html>
+<html lang="en" style="color-scheme: dark;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E0D0C">
+<title>Rahil Shah — IT Student &amp; AI Explorer</title>
+<meta name="description" content="Rahil Shah — B.Tech Integrated IT student at NMIMS MPSTME. Curious about AI, prompt &amp; context engineering, local LLMs, and hands-on hardware.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230E0D0C'/%3E%3Cpath d='M6 24 L16 7 L26 24' fill='none' stroke='%23E2472F' stroke-width='2.2'/%3E%3Ccircle cx='16' cy='19' r='1.6' fill='%23F3EEE3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800&amp;family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   0. DESIGN TOKENS
+   ---------------------------------------------------------------
+   Foundation: warm ink / charcoal / graphite, paper-white surfaces.
+   Accent: restrained vermilion + burnt amber, used as signal, not glow.
+   Typography: Big Shoulders Display (condensed, industrial — hero
+   numerals, headings) · Fraunces italic (editorial statement voice,
+   used sparingly) · IBM Plex Sans (body) · IBM Plex Mono (data only).
+   ============================================================ */
+:root{
+  --ink:#0E0D0C;
+  --ink-soft:#131110;
+  --charcoal:#1B1815;
+  --graphite:#252119;
+  --graphite-hi:#332C22;
+  --line:rgba(243,238,227,.14);
+  --line-strong:rgba(243,238,227,.26);
+  --paper:#F3EEE3;
+  --paper-dim:#CFC7B4;
+  --paper-faint:#8B8474;
+  --vermilion:#C6402E;
+  --vermilion-bright:#E2472F;
+  --amber:#B9762E;
+  --amber-bright:#D99A4E;
+  --steel:#6E7168;
+  --crimson:#7A2418;
+
+  --radius:5px;
+  --shadow-card:0 24px 60px -28px rgba(0,0,0,.7);
+  --shadow-lift:0 14px 34px -18px rgba(0,0,0,.6);
+  --header-h:72px;
+
+  --font-display:'Big Shoulders Display','Arial Narrow',sans-serif;
+  --font-voice:'Fraunces','Georgia',serif;
+  --font-body:'IBM Plex Sans','Segoe UI',ui-sans-serif,system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-spring:cubic-bezier(.2,1.4,.4,1);
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+}
+
+/* ============================================================
+   1. RESET / BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden;}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%;}
+h1,h2,h3,h4,p,ul,ol,figure,dl,dd{margin:0;}
+ul{padding:0;list-style:none;}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;touch-action:manipulation;}
+a{color:inherit;text-decoration:none;touch-action:manipulation;}
+input{font:inherit;color:inherit;background:none;border:0;}
+
+a,button,input,[tabindex]{outline:none;}
+a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--vermilion-bright);
+  outline-offset:3px;
+  border-radius:2px;
+}
+
+h1,h2,h3{font-family:var(--font-display);font-weight:700;letter-spacing:-.01em;text-wrap:balance;line-height:.98;}
+h4{font-family:var(--font-body);font-weight:600;letter-spacing:.02em;}
+em{font-family:var(--font-voice);font-style:italic;font-weight:500;}
+
+.skip-link{
+  position:fixed;top:-100%;left:12px;z-index:999;
+  background:var(--vermilion-bright);color:var(--paper);
+  padding:.8em 1.2em;border-radius:3px;
+  font-weight:600;
+  transition:top .2s var(--ease);
+}
+.skip-link:focus{top:12px;}
+
+::selection{background:var(--vermilion);color:var(--paper);}
+
+/* ============================================================
+   2. LAYOUT UTILITIES
+   ============================================================ */
+.container{
+  width:100%;
+  max-width:1180px;
+  margin-inline:auto;
+  padding-inline:28px;
+}
+@media (min-width:1440px){ .container{max-width:1320px;padding-inline:40px;} }
+@media (max-width:640px){ .container{padding-inline:20px;} }
+
+section{
+  padding-block:128px;
+  scroll-margin-top:calc(var(--header-h) + 14px);
+  position:relative;
+}
+@media (max-width:720px){
+  section{padding-block:84px;}
+}
+
+.rule{border:0;border-top:1px solid var(--line);}
+
+.section-head{
+  margin-bottom:56px;
+  max-width:640px;
+}
+.section-head .mark{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:18px;
+}
+.section-head .mark::before{
+  content:"";width:22px;height:1px;background:var(--vermilion-bright);
+}
+.section-head .mark span{
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;
+  color:var(--paper-faint);
+}
+.section-head h2{
+  font-size:clamp(2.3rem,5.4vw,3.9rem);
+  text-transform:uppercase;
+}
+.section-head .lede{
+  margin-top:16px;
+  font-family:var(--font-voice);
+  font-style:italic;
+  font-size:1.18rem;
+  color:var(--paper-dim);
+  max-width:46ch;
+}
+
+/* ============================================================
+   3. BUTTONS / LINKS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+  padding:.95em 1.7em;
+  border-radius:var(--radius);
+  font-weight:600;
+  font-size:.95rem;
+  cursor:pointer;
+  transition:transform .3s var(--ease-spring), background-color .2s ease, border-color .2s ease, color .2s ease;
+  white-space:nowrap;
+}
+.btn-primary{
+  background:var(--paper);
+  color:var(--ink);
+  border:1px solid var(--paper);
+}
+.btn-primary:hover{background:var(--vermilion-bright);border-color:var(--vermilion-bright);color:var(--paper);transform:translateY(-2px);}
+.btn-outline{
+  background:transparent;
+  color:var(--paper);
+  border:1px solid var(--line-strong);
+}
+.btn-outline:hover{border-color:var(--paper);transform:translateY(-2px);}
+.btn:active{transform:translateY(0) scale(.97);}
+.icon-btn:active{transform:scale(.93);}
+.link-arrow:active{transform:scale(.98);}
+
+.link-arrow{
+  display:inline-flex;align-items:center;gap:.5em;
+  font-weight:600;color:var(--paper);
+  border-bottom:1px solid var(--line-strong);
+  padding-bottom:.15em;
+  transition:border-color .25s var(--ease), color .25s var(--ease), gap .25s var(--ease);
+}
+.link-arrow svg{width:1em;height:1em;transition:transform .3s var(--ease-spring);}
+.link-arrow:hover{border-color:var(--vermilion-bright);color:var(--vermilion-bright);}
+.link-arrow:hover svg{transform:translateX(4px);}
+
+kbd{
+  font-family:var(--font-mono);
+  font-size:.75em;
+  background:var(--graphite);
+  border:1px solid var(--line-strong);
+  border-bottom-width:2px;
+  border-radius:4px;
+  padding:.15em .5em;
+  color:var(--paper-dim);
+}
+
+/* ============================================================
+   4. HEADER / NAV
+   ============================================================ */
+.site-header{
+  position:sticky;top:0;z-index:60;
+  height:var(--header-h);
+  display:flex;align-items:center;
+  background:rgba(14,13,12,.82);
+  backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--line);
+}
+.scroll-progress{
+  position:absolute;left:0;bottom:-1px;height:2px;
+  background:var(--vermilion-bright);
+  width:0%;
+  transform-origin:left;
+}
+.header-inner{
+  width:100%;
+  max-width:1180px;margin-inline:auto;padding-inline:28px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+@media (min-width:1440px){ .header-inner{max-width:1320px;padding-inline:40px;} }
+@media (max-width:640px){ .header-inner{padding-inline:20px;} }
+
+.wordmark{
+  font-family:var(--font-display);font-weight:700;font-size:1.15rem;
+  letter-spacing:.01em;text-transform:uppercase;
+  display:flex;align-items:baseline;gap:8px;
+}
+.wordmark .dot{color:var(--vermilion-bright);}
+
+.main-nav ul{display:flex;gap:30px;align-items:center;}
+.main-nav a{
+  font-size:.86rem;font-weight:500;color:var(--paper-dim);
+  position:relative;padding-block:6px;
+  transition:color .2s ease;
+}
+.main-nav a::after{
+  content:"";position:absolute;left:0;bottom:0;height:1px;width:0;
+  background:var(--vermilion-bright);transition:width .28s var(--ease);
+}
+.main-nav a:hover,.main-nav a.is-active{color:var(--paper);}
+.main-nav a.is-active::after,.main-nav a:hover::after{width:100%;}
+
+@media (max-width:900px){
+  .main-nav{
+    position:fixed;inset:var(--header-h) 0 0 0;
+    background:var(--ink);
+    padding:28px;
+    transform:translateY(-8px);opacity:0;visibility:hidden;
+    transition:opacity .25s var(--ease), transform .25s var(--ease), visibility .25s;
+    overflow-y:auto;
+  }
+  .main-nav.is-open{opacity:1;visibility:visible;transform:translateY(0);}
+  .main-nav ul{flex-direction:column;align-items:flex-start;gap:4px;}
+  .main-nav a{display:block;width:100%;padding-block:16px;font-size:1.5rem;font-family:var(--font-display);font-weight:600;border-bottom:1px solid var(--line);}
+}
+
+.header-actions{display:flex;align-items:center;gap:10px;}
+.palette-trigger{
+  display:flex;align-items:center;gap:8px;
+  padding:.5em .8em;border:1px solid var(--line-strong);border-radius:var(--radius);
+  color:var(--paper-dim);font-size:.82rem;
+  transition:border-color .2s ease,color .2s ease;
+}
+.palette-trigger:hover{border-color:var(--paper);color:var(--paper);}
+.palette-trigger svg{width:15px;height:15px;}
+.palette-trigger .kbd-row{display:flex;gap:3px;}
+@media (max-width:560px){ .palette-trigger .label{display:none;} }
+
+.nav-toggle{display:none;padding:8px;}
+.nav-toggle svg{width:22px;height:22px;}
+@media (max-width:900px){ .nav-toggle{display:flex;} .main-nav{display:block;} }
+@media (min-width:901px){ .main-nav{display:block !important;position:static;opacity:1;visibility:visible;transform:none;padding:0;background:none;} }
+
+/* ---------- Index rail (desktop wayfinding) ---------- */
+.index-rail{
+  position:fixed;right:22px;top:50%;transform:translateY(-50%);
+  z-index:40;
+  display:flex;flex-direction:column;gap:16px;
+}
+.index-rail button{
+  width:9px;height:9px;border-radius:50%;
+  border:1px solid var(--line-strong);
+  position:relative;
+  transition:background-color .25s ease, border-color .25s ease;
+}
+.index-rail button.is-active{background:var(--vermilion-bright);border-color:var(--vermilion-bright);}
+.index-rail button .rail-label{
+  position:absolute;right:20px;top:50%;transform:translateY(-50%);
+  font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;
+  color:var(--paper-dim);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .2s ease;
+}
+.index-rail button:hover .rail-label,.index-rail button:focus-visible .rail-label{opacity:1;}
+@media (max-width:1100px){ .index-rail{display:none;} }
+
+/* ============================================================
+   5. HERO
+   ============================================================ */
+.hero{
+  min-height:calc(100vh - var(--header-h));
+  display:flex;align-items:center;
+  padding-block:80px;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:-2;
+  background:
+    repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 88px);
+  opacity:.35;
+  mask-image:radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 85%);
+}
+.hero-spot{
+  position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(520px circle at var(--mx,50%) var(--my,32%), rgba(198,64,46,.16), transparent 62%);
+  transition:background .4s ease;
+}
+@media (prefers-reduced-motion: reduce){ .hero-spot{transition:none;} }
+
+.hero-kicker{
+  font-family:var(--font-mono);font-size:.78rem;letter-spacing:.14em;
+  color:var(--paper-faint);
+  display:flex;align-items:center;gap:10px;margin-bottom:26px;
+}
+.hero-kicker::before{
+  content:"";width:0;height:1px;background:var(--vermilion-bright);
+  transition:width .7s var(--ease) .15s;
+}
+.hero.is-ready .hero-kicker::before{width:22px;}
+
+.hero h1{
+  font-size:clamp(3.4rem,11vw,8.6rem);
+  text-transform:uppercase;
+  display:flex;flex-direction:column;
+}
+.hero h1 .line{overflow:hidden;display:flex;}
+.hero h1 .ch{
+  display:inline-block;transform:translateY(112%);
+  transition:transform .7s var(--ease);
+  transition-delay:calc(var(--i,0) * 32ms + .12s);
+}
+.hero.is-ready h1 .ch{transform:translateY(0);}
+.hero h1 .line:nth-child(2) .ch{transition-delay:calc(var(--i,0) * 32ms + .32s);}
+
+.hero-voice{
+  margin-top:26px;
+  font-family:var(--font-voice);font-style:italic;font-weight:500;
+  font-size:clamp(1.3rem,2.6vw,1.7rem);
+  color:var(--paper);
+  max-width:30ch;
+  opacity:0;transform:translateY(14px);
+  transition:opacity .7s var(--ease) .5s, transform .7s var(--ease) .5s;
+}
+.hero.is-ready .hero-voice{opacity:1;transform:translateY(0);}
+
+.hero-body{
+  margin-top:18px;
+  color:var(--paper-dim);
+  max-width:52ch;
+  font-size:1.02rem;
+  opacity:0;transform:translateY(14px);
+  transition:opacity .7s var(--ease) .62s, transform .7s var(--ease) .62s;
+}
+.hero.is-ready .hero-body{opacity:1;transform:translateY(0);}
+
+.hero-ctas{
+  margin-top:40px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;
+  opacity:0;transform:translateY(14px);
+  transition:opacity .7s var(--ease) .74s, transform .7s var(--ease) .74s;
+}
+.hero.is-ready .hero-ctas{opacity:1;transform:translateY(0);}
+
+.hero-meta{
+  margin-top:64px;display:flex;gap:36px;flex-wrap:wrap;
+  padding-top:22px;border-top:1px solid var(--line);
+  opacity:0;transition:opacity .7s var(--ease) .9s;
+}
+.hero.is-ready .hero-meta{opacity:1;}
+.hero-meta div{font-size:.82rem;color:var(--paper-faint);}
+.hero-meta strong{display:block;color:var(--paper);font-weight:600;font-size:.92rem;margin-bottom:2px;}
+
+@media (prefers-reduced-motion: reduce){
+  .hero h1 .ch,.hero-voice,.hero-body,.hero-ctas,.hero-meta{transition:opacity .4s ease !important;transform:none !important;}
+  .hero-kicker::before{transition:none !important;width:22px;}
+}
+
+/* ============================================================
+   6. ABOUT — editorial split
+   ============================================================ */
+.about-grid{
+  display:grid;grid-template-columns:7fr 5fr;gap:60px;align-items:start;
+}
+@media (max-width:860px){ .about-grid{grid-template-columns:1fr;gap:36px;} }
+
+.about-statement{
+  font-family:var(--font-voice);font-style:italic;font-weight:500;
+  font-size:clamp(1.7rem,3.4vw,2.5rem);
+  line-height:1.28;
+  color:var(--paper);
+  /* A thin accent rule sits alongside the statement, tying it to
+     the editorial system the rest of the page uses. */
+  padding-left:22px;
+  border-left:2px solid var(--vermilion-bright);
+}
+.about-body{
+  margin-top:26px;color:var(--paper-dim);max-width:60ch;font-size:1.02rem;
+  padding-left:22px;
+}
+.about-meta{
+  margin-top:8px;padding-top:34px;border-top:1px solid var(--line);
+}
+@media (min-width:861px){ .about-meta{margin-top:64px;} }
+.about-meta dl{display:flex;flex-direction:column;gap:0;}
+.about-meta > dl > div{
+  display:flex;justify-content:space-between;gap:16px;
+  padding-block:16px;border-bottom:1px solid var(--line);
+  font-size:.92rem;
+  transition:background-color .25s ease;
+}
+.about-meta > dl > div:hover{background:rgba(243,238,227,.02);}
+.about-meta dt{color:var(--paper-faint);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;}
+.about-meta dd{color:var(--paper);font-weight:500;text-align:right;}
+
+/* ============================================================
+   7. EDUCATION — year-to-year progression
+   ============================================================ */
+.edu-track{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;
+  margin-bottom:64px;
+}
+.edu-year{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(2.4rem,7vw,4.6rem);
+  color:var(--paper);line-height:1;
+}
+.edu-year.end{color:var(--paper-faint);}
+/* The rail the timeline is drawn on. overflow stays visible so the year
+   ticks can sit above and below it. */
+.edu-line{height:2px;background:var(--line);position:relative;}
+.edu-line-fill{
+  position:absolute;left:0;top:0;bottom:0;width:0%;
+  background:linear-gradient(90deg, var(--vermilion), var(--amber-bright));
+  transition:width 1.15s var(--ease-emphasis,cubic-bezier(.16,1,.3,1));
+}
+/* NOTE: this used to read `.education.is-drawn`, but the section carries
+   id="education" and no such class — so the line never drew at all. */
+#education.is-drawn .edu-line-fill{width:100%;}
+
+.edu-ticks{position:absolute;inset:0;}
+.edu-tick{
+  position:absolute;top:50%;left:calc(var(--t) / 6 * 100%);
+  width:1px;height:12px;background:var(--line-strong);
+  transform:translate(-50%,-50%) scaleY(0);
+  transform-origin:center;
+  transition:transform .34s var(--ease-spring) calc(var(--t) * 150ms + 120ms),
+             background-color .3s ease calc(var(--t) * 150ms + 120ms);
+}
+.edu-tick i{
+  position:absolute;left:50%;top:14px;transform:translateX(-50%);
+  font-family:var(--font-mono);font-style:normal;font-size:.58rem;
+  letter-spacing:.1em;color:var(--paper-faint);
+  opacity:0;transition:opacity .3s ease calc(var(--t) * 150ms + 260ms);
+}
+/* The first and last ticks are the stated bounds, so they read heavier. */
+.edu-tick[style*="--t:0"],.edu-tick[style*="--t:6"]{height:20px;}
+#education.is-drawn .edu-tick{transform:translate(-50%,-50%) scaleY(1);background:var(--amber-bright);}
+#education.is-drawn .edu-tick i{opacity:1;}
+@media (max-width:640px){ .edu-tick i{display:none;} }
+@media (max-width:640px){ .edu-track{grid-template-columns:1fr;gap:14px;text-align:left;} .edu-line{order:3;width:100%;} }
+
+.edu-detail{
+  display:grid;grid-template-columns:1fr 1fr;gap:40px;
+  padding-top:32px;border-top:1px solid var(--line);
+}
+@media (max-width:760px){ .edu-detail{grid-template-columns:1fr;gap:24px;} }
+.edu-detail h3{font-size:clamp(1.3rem,2.6vw,1.7rem);text-transform:none;letter-spacing:0;}
+.edu-detail .degree{margin-top:10px;font-family:var(--font-voice);font-style:italic;color:var(--paper-dim);font-size:1.08rem;}
+.edu-detail .loc{margin-top:18px;font-family:var(--font-mono);font-size:.78rem;color:var(--paper-faint);letter-spacing:.06em;}
+
+/* ============================================================
+   8. SKILLS — connected node system
+   ============================================================ */
+.skills-diagram{position:relative;padding-top:12px;}
+
+.skills-nodes{
+  display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;gap:22px 0;
+  align-items:stretch;position:relative;z-index:1;
+}
+.skills-connector{align-self:center;height:2px;background:var(--line-strong);position:relative;overflow:hidden;}
+.skills-connector::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,var(--amber-bright),transparent);
+  transform:translateX(-100%);
+}
+.skills-diagram.is-visible .skills-connector::before{
+  animation:skillsBeamTravel 1s var(--ease) calc(var(--bi,0) * 220ms + .25s) 1 both;
+}
+@keyframes skillsBeamTravel{
+  0%{transform:translateX(-100%);}
+  55%{transform:translateX(0%);}
+  100%{transform:translateX(100%);}
+}
+.skills-connector::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,var(--vermilion),var(--amber-bright));
+  transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);
+}
+.skills-nodes:has(> :nth-child(1):hover) > :nth-child(2)::after,
+.skills-nodes:has(> :nth-child(1).is-active) > :nth-child(2)::after,
+.skills-nodes:has(> :nth-child(3):hover) > :nth-child(2)::after,
+.skills-nodes:has(> :nth-child(3).is-active) > :nth-child(2)::after,
+.skills-nodes:has(> :nth-child(3):hover) > :nth-child(4)::after,
+.skills-nodes:has(> :nth-child(3).is-active) > :nth-child(4)::after,
+.skills-nodes:has(> :nth-child(5):hover) > :nth-child(4)::after,
+.skills-nodes:has(> :nth-child(5).is-active) > :nth-child(4)::after{
+  transform:scaleX(1);
+}
+@media (max-width:760px){
+  .skills-nodes{grid-template-columns:1fr;}
+  .skills-connector{display:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  .skills-diagram.is-visible .skills-connector::before{animation:none;}
+}
+
+.skill-node{
+  border:1px solid var(--line);
+  padding:32px 28px;
+  text-align:left;
+  background:var(--ink-soft);
+  border-radius:3px;
+  position:relative;
+  transition:border-color .3s ease, transform .3s var(--ease-spring), background-color .3s ease, box-shadow .3s var(--ease);
+}
+.skill-node::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--vermilion-bright);
+  transform:scaleY(0);transform-origin:top;
+  transition:transform .35s var(--ease);
+}
+.skill-node:hover,.skill-node:focus-visible,.skill-node.is-active{
+  border-color:var(--vermilion-bright);
+  transform:translateY(-6px);
+  background:var(--charcoal);
+  box-shadow:0 16px 40px -18px rgba(0,0,0,.5);
+}
+.skill-node:hover::before,.skill-node:focus-visible::before,.skill-node.is-active::before{
+  transform:scaleY(1);
+}
+.skill-node .n{font-family:var(--font-mono);font-size:.75rem;color:var(--paper-faint);}
+.skill-node h3{margin-top:14px;font-size:1.3rem;text-transform:none;letter-spacing:0;}
+.skill-node p{
+  margin-top:12px;font-size:.9rem;color:var(--paper-dim);
+  max-height:0;overflow:hidden;opacity:0;
+  transition:max-height .4s var(--ease), opacity .3s ease;
+}
+.skill-node:hover p,.skill-node:focus-visible p,.skill-node.is-active p{max-height:8em;opacity:1;margin-top:12px;}
+
+/* ============================================================
+   9. CERTIFICATION — document artifact
+   ============================================================ */
+.cert-wrap{display:flex;justify-content:center;}
+.cert-doc{
+  width:min(100%,560px);
+  background:var(--paper);
+  color:var(--ink);
+  padding:52px 46px;
+  position:relative;
+  clip-path:polygon(0 0,100% 0,100% 96%,97% 100%,3% 100%,0 96%);
+  box-shadow:var(--shadow-card);
+  transform:rotate(-1.2deg);
+  transition:transform .5s var(--ease-spring);
+}
+.cert-doc:hover{transform:rotate(0deg);}
+@media (prefers-reduced-motion: reduce){ .cert-doc{transition:none;} }
+.cert-doc .cert-kicker{
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;color:var(--steel);
+}
+.cert-doc h3{
+  margin-top:16px;font-size:clamp(1.5rem,3vw,2rem);color:var(--ink);text-transform:none;letter-spacing:0;
+}
+.cert-doc .cert-name{
+  margin-top:10px;font-family:var(--font-voice);font-style:italic;font-size:1.15rem;color:var(--crimson);
+}
+.cert-seal{
+  position:absolute;right:34px;bottom:34px;width:78px;height:78px;
+  border:1.5px solid var(--crimson);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transform:rotate(-8deg);
+  color:var(--crimson);
+}
+.cert-seal svg{width:52px;height:52px;}
+.cert-doc hr{margin-top:26px;border-top:1px solid rgba(14,13,12,.16);}
+.cert-doc .cert-name-holder{margin-top:22px;font-weight:600;font-size:1.02rem;}
+
+/* ============================================================
+   10. TECHNICAL WORK — schematic treatments
+   ============================================================ */
+.work-list{display:flex;flex-direction:column;gap:2px;}
+.work-item{
+  border-top:1px solid var(--line);
+  padding-block:48px;
+  display:grid;grid-template-columns:200px 1fr;gap:40px;
+  transition:background-color .3s ease;
+}
+.work-item:hover{background:rgba(243,238,227,.015);}
+.work-item:last-child{border-bottom:1px solid var(--line);}
+@media (max-width:800px){ .work-item{grid-template-columns:1fr;gap:20px;} }
+
+.work-item .tag{
+  font-family:var(--font-mono);font-size:.75rem;color:var(--paper-faint);letter-spacing:.06em;
+  display:flex;align-items:center;gap:8px;
+}
+.work-item .tag .dot{width:6px;height:6px;border-radius:50%;background:var(--amber-bright);}
+
+.work-body h3{font-size:clamp(1.4rem,2.6vw,1.9rem);text-transform:none;letter-spacing:0;max-width:20ch;}
+.work-body p{margin-top:16px;color:var(--paper-dim);max-width:62ch;font-size:1rem;}
+.work-item .tag .wf-no{
+  font-weight:600;letter-spacing:.16em;color:var(--paper-dim);
+  border:1px solid var(--line);padding:3px 7px;margin-right:2px;
+}
+
+/* Case-file record. Three fields, all of them already stated in the
+   copy above — this is presentation, not new claims. */
+.work-record{
+  display:flex;flex-wrap:wrap;gap:0;margin:22px 0 0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.work-record > div{
+  flex:1 1 150px;padding:14px 18px 14px 0;
+  border-right:1px solid var(--line);
+}
+.work-record > div:last-child{border-right:0;}
+.work-record > div + div{padding-left:18px;}
+.work-record dt{
+  font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;
+  color:var(--paper-faint);margin-bottom:6px;
+}
+.work-record dd{margin:0;font-family:var(--font-mono);font-size:.8rem;color:var(--paper-dim);}
+.work-record dd.is-live{color:var(--amber-bright);}
+.work-record dd.is-concept{color:var(--steel);}
+
+.work-schematic{margin-top:30px;opacity:.9;}
+.work-schematic svg{width:100%;max-width:420px;height:auto;color:var(--paper-faint);}
+/* The schematic draws itself when the file scrolls in — the same
+   pathLength="1" technique the Engineering drawing uses, so the two
+   sections read as the same hand. */
+/* Drawn with a keyframe rather than a transition. A transition on
+   stroke-dashoffset here held at its start value indefinitely (no running
+   animation, cascade resolving to 0) — an animation is deterministic and
+   does not depend on when the class flip lands relative to first paint. */
+.work-schematic svg .wf-draw{
+  stroke-dasharray:1;stroke-dashoffset:1;
+  vector-effect:non-scaling-stroke;
+}
+.work-schematic svg.is-drawn .wf-draw{
+  animation:workDraw 1.05s var(--ease-emphasis,cubic-bezier(.16,1,.3,1)) var(--sd,0ms) forwards;
+}
+@keyframes workDraw{ to{ stroke-dashoffset:0; } }
+@media (prefers-reduced-motion: reduce){
+  .work-schematic svg .wf-draw{animation:none;stroke-dashoffset:0;}
+}
+html[data-motion="reduced"] .work-schematic svg .wf-draw{animation:none;stroke-dashoffset:0;}
+
+/* ============================================================
+   11. BEYOND THE RESUME — typographic index
+   ============================================================ */
+.beyond-intro{color:var(--paper-dim);max-width:56ch;margin-bottom:40px;font-size:1rem;}
+.interest-index{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--line);}
+.interest-index a,.interest-index span.item{
+  flex:1 1 auto;
+  padding:22px 8px;
+  border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:600;
+  font-size:clamp(1.1rem,2.6vw,1.7rem);
+  text-transform:uppercase;
+  color:var(--paper-dim);
+  min-width:150px;
+  position:relative;
+  transition:color .25s ease, background-color .25s ease;
+  text-align:center;
+}
+.interest-index a::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--vermilion-bright);
+  transform:scaleY(0);transform-origin:top;
+  transition:transform .35s var(--ease);
+}
+.interest-index a:hover,.interest-index a:focus-visible{color:var(--vermilion-bright);background:var(--ink-soft);}
+.interest-index a:hover::before,.interest-index a:focus-visible::before{transform:scaleY(1);}
+.interest-index span.item{color:var(--paper-faint);}
+.interest-index .item small{
+  display:block;font-family:var(--font-mono);font-size:.6rem;text-transform:none;letter-spacing:.08em;
+  color:var(--paper-faint);margin-top:6px;
+}
+
+/* ============================================================
+   12. ANIME — exhibition: index + stage + strip.
+   Real artwork (local files) with a generated fallback so a
+   missing or failed image never shows a broken-image icon.
+   ============================================================ */
+.anime-note{
+  color:var(--paper-faint);font-size:.86rem;max-width:60ch;margin-bottom:36px;
+  border-left:2px solid var(--line-strong);padding-left:16px;
+}
+.exhibit{
+  position:relative;display:grid;grid-template-columns:minmax(230px,.42fr) minmax(0,1fr);
+  gap:clamp(20px,4vw,56px);align-items:stretch;
+}
+.exhibit-index{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);}
+.exhibit-choice{
+  width:100%;display:grid;grid-template-columns:36px 1fr 40px;gap:12px;align-items:center;text-align:left;
+  padding:12px 0;border-bottom:1px solid var(--line);
+  color:var(--paper-faint);position:relative;
+  transition:color .3s var(--ease), padding-left .35s var(--ease);
+}
+.exhibit-choice::before{
+  content:"";position:absolute;left:0;top:0;width:2px;height:100%;
+  background:var(--vermilion-bright);transform:scaleY(0);transform-origin:top;
+  transition:transform .3s var(--ease);
+}
+.exhibit-choice:hover,.exhibit-choice[aria-current="true"]{color:var(--paper);padding-left:12px;}
+.exhibit-choice[aria-current="true"]::before{transform:scaleY(1);}
+.exhibit-choice .n{font-family:var(--font-mono);font-size:.72rem;color:var(--paper-faint);}
+.exhibit-choice .t{font-family:var(--font-display);font-weight:600;font-size:.98rem;text-transform:uppercase;line-height:1.15;}
+/* ---------- Anime: ranking thumbnails ----------
+   The posters are portrait (0.64–0.73). Square thumbnails cropped them
+   into unreadable colour blocks, so these are 2:3 plates that show the
+   whole print. */
+.rank-thumb{
+  width:46px;height:68px;border:1px solid var(--line);position:relative;overflow:hidden;flex:none;
+  border-radius:2px;
+  background:
+    radial-gradient(120% 140% at 20% -10%, var(--card-a) 0%, transparent 60%),
+    radial-gradient(120% 140% at 100% 120%, var(--card-b) 0%, transparent 60%),
+    var(--ink);
+  transition:border-color .28s ease, transform .34s var(--ease), box-shadow .34s var(--ease);
+}
+.rank-thumb img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;
+  opacity:0;transition:opacity .4s ease;
+}
+.rank-thumb img.is-loaded{opacity:1;}
+.exhibit-choice:hover .rank-thumb,
+.exhibit-choice[aria-current="true"] .rank-thumb{border-color:var(--paper-dim);transform:translateY(-3px);box-shadow:0 8px 20px -8px rgba(0,0,0,.6);}
+.exhibit-choice[aria-current="true"] .rank-thumb{border-color:var(--accent-strong,var(--vermilion-bright));}
+
+.exhibit-stage{
+  position:relative;min-height:600px;border:1px solid var(--line);
+  overflow:hidden;outline:none;perspective:1600px;background:var(--ink);
+  /* A subtle vignette on the stage reads as a dark exhibition space. */
+  box-shadow:inset 0 0 120px 30px rgba(0,0,0,.3);
+}
+.stage-layers{
+  position:relative;z-index:1;height:100%;min-height:600px;
+  transform:perspective(1600px) rotateX(var(--tiltX,0deg)) rotateY(var(--tiltY,0deg)) translateX(var(--slideX,0px));
+  opacity:var(--stageOpacity,1);
+  transition:transform .5s var(--ease), opacity .28s ease;
+  transform-style:preserve-3d;
+}
+.exhibit-stage.no-transition .stage-layers{transition:none !important;}
+
+/* Atmosphere layer — colour only. Cropping here is intentional. */
+.stage-art{
+  position:absolute;inset:0;z-index:0;overflow:hidden;
+  transform:
+    translate3d(calc(var(--px,0) * -14px),calc(var(--py,0) * -10px),0)
+    scale(var(--artScale,1.18)) rotate(var(--artRotate,0deg)) translateX(var(--artSlideX,0px));
+  opacity:var(--artOpacity,1);
+  transition:transform .38s var(--ease), opacity .28s ease;
+}
+.exhibit-stage.no-transition .stage-art{transition:none !important;}
+.stage-bg{
+  width:100%;height:100%;object-fit:cover;
+  filter:blur(30px) saturate(1.2) brightness(.35);
+  opacity:0;transition:opacity .55s ease;
+  transform:scale(1.22);
+}
+.stage-bg.is-loaded{opacity:.9;}
+
+.stage-glare{
+  position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:radial-gradient(360px circle at var(--glare-x,50%) var(--glare-y,50%), rgba(255,255,255,.1), transparent 58%);
+  opacity:0;transition:opacity .35s ease;
+  mix-blend-mode:screen;
+}
+.exhibit-stage:hover .stage-glare,.exhibit-stage:focus-within .stage-glare{opacity:1;}
+@media (hover:none){ .stage-glare{display:none;} }
+
+/* The print itself — hung on the right, complete, never cropped.
+   EXHIBITION POSTER: large, commanding, the star of the composition.
+   Sized to visually dominate the right side of the stage. */
+.stage-plate{
+  position:absolute;z-index:3;
+  top:50%;right:clamp(28px,6%,72px);
+  width:min(42%,340px);
+  aspect-ratio:2 / 3;
+  margin:0;
+  transform:
+    translate3d(calc(var(--px,0) * 10px), calc(-50% + var(--py,0) * 7px), 60px)
+    rotateY(calc(var(--px,0) * -2.4deg))
+    scale(var(--plateScale,1));
+  transition:transform .42s var(--ease), opacity .3s ease;
+  opacity:var(--plateOpacity,1);
+  background:var(--ink-soft);
+  /* Museum mount: subtle border, strong paper-white inner glow at top,
+     deep exhibition shadow. */
+  border:2px solid rgba(243,238,227,.12);
+  box-shadow:
+    0 2px 0 rgba(243,238,227,.06) inset,
+    0 40px 80px -20px rgba(0,0,0,.95),
+    0 8px 22px -6px rgba(0,0,0,.75),
+    0 0 0 1px rgba(243,238,227,.04);
+}
+.exhibit-stage.no-transition .stage-plate{transition:none !important;}
+.stage-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;   /* never crop the artwork */
+  opacity:0;transition:opacity .5s ease;
+}
+.stage-img.is-loaded{opacity:1;}
+
+/* Archival fallback — a designed plate, not a missing-image box. */
+.stage-fallback{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:flex-end;gap:10px;
+  padding:22px 18px;
+  background:
+    repeating-linear-gradient(-45deg,transparent 0 9px,rgba(243,238,227,.028) 9px 10px),
+    radial-gradient(120% 90% at 50% 0%, var(--card-a) 0%, transparent 62%),
+    var(--charcoal);
+}
+.stage-fallback .fb-rule{height:1px;background:var(--accent-strong,var(--vermilion-bright));width:38px;}
+.stage-fallback .fb-title{
+  font-family:var(--font-display);font-weight:700;line-height:.95;
+  font-size:clamp(1.5rem,3.4vw,2.2rem);color:var(--paper);text-transform:uppercase;
+}
+/* When a poster is missing, the plate becomes the artwork rather than an
+   empty frame around nothing. */
+.stage-plate.is-unsourced{border-color:rgba(243,238,227,.24);}
+.stage-plate.is-unsourced .stage-fallback{opacity:1;}
+.stage-fallback .fb-note{
+  font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;color:var(--paper-faint);
+}
+
+.stage-scrim{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(14,13,12,.94) 0%, rgba(14,13,12,.72) 42%, rgba(14,13,12,.15) 78%),
+    linear-gradient(0deg, rgba(14,13,12,.8) 0%, transparent 46%);
+}
+.stage-rank{position:absolute;top:26px;left:28px;z-index:5;font-family:var(--font-mono);font-size:.72rem;color:var(--paper-dim);letter-spacing:.16em;}
+
+/* Copy sits in the left column, clear of the print. */
+.stage-copy{
+  position:absolute;left:0;bottom:0;z-index:5;max-width:min(56%,430px);
+  padding:clamp(22px,3.4vw,40px);
+  transform:translate3d(calc(var(--px,0) * 12px),calc(var(--py,0) * 8px),50px);
+  transition:transform .2s linear;
+}
+.stage-copy .stage-count{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.16em;color:var(--paper-faint);}
+.stage-copy h3{
+  margin:10px 0 12px;font-size:clamp(1.7rem,3.4vw,2.7rem);text-transform:uppercase;max-width:12ch;
+  text-shadow:0 8px 26px rgba(0,0,0,.5);
+}
+.stage-copy p{max-width:38ch;color:var(--paper-dim);font-size:.9rem;line-height:1.6;}
+.stage-controls{position:absolute;right:20px;bottom:20px;z-index:6;display:flex;gap:8px;}
+.icon-btn{
+  width:44px;height:44px;display:grid;place-items:center;
+  border:1px solid var(--line-strong);background:rgba(14,13,12,.62);color:var(--paper);
+  transition:background .2s ease, color .2s ease, border-color .2s ease, transform .3s var(--ease-spring);
+}
+.icon-btn svg{width:18px;height:18px;}
+.icon-btn:hover{background:var(--paper);color:var(--ink);border-color:var(--paper);transform:translateY(-3px);}
+
+/* ---------- Anime: thumbnail strip ----------
+   Miniature posters, matching the ranking plates. */
+.exhibit-strip{display:flex;gap:8px;overflow-x:auto;margin-top:20px;padding-bottom:8px;scrollbar-width:thin;}
+.exhibit-chip{
+  flex:none;width:56px;height:84px;position:relative;overflow:hidden;
+  border:1px solid var(--line);border-radius:2px;
+  background:
+    radial-gradient(120% 140% at 20% -10%, var(--card-a) 0%, transparent 60%),
+    radial-gradient(120% 140% at 100% 120%, var(--card-b) 0%, transparent 60%),
+    var(--ink);
+  transition:border-color .25s ease, transform .3s var(--ease-spring), opacity .25s ease, box-shadow .3s var(--ease);
+  opacity:.5;
+}
+.exhibit-chip img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;
+  opacity:0;transition:opacity .4s ease;
+}
+.exhibit-chip img.is-loaded{opacity:1;}
+.exhibit-chip .chip-n{
+  position:absolute;left:0;right:0;bottom:0;z-index:1;padding:3px 5px;
+  font-family:var(--font-mono);font-size:.58rem;color:var(--paper-dim);
+  background:linear-gradient(transparent,rgba(10,9,8,.92));
+}
+.exhibit-chip:hover,.exhibit-chip[aria-current="true"]{opacity:1;border-color:var(--paper-dim);}
+.exhibit-chip[aria-current="true"]{border-color:var(--vermilion-bright);transform:translateY(-5px);box-shadow:0 10px 24px -8px rgba(0,0,0,.6);}
+
+@media (max-width:860px){
+  .exhibit{grid-template-columns:1fr;}
+  .exhibit-index{display:grid;grid-template-columns:repeat(2,1fr);}
+  .exhibit-choice{border-right:1px solid var(--line);padding-inline:10px;}
+  .exhibit-stage{order:-1;min-height:520px;}
+  .stage-layers{min-height:520px;}
+  /* Portrait screens: the print takes the stage centre. Sized larger
+     than before so the poster commands attention even on mobile. */
+  .stage-plate{
+    top:22px;left:50%;right:auto;
+    width:min(60%,220px);
+    transform:translate3d(-50%,0,0);
+  }
+  .stage-scrim{
+    background:
+      linear-gradient(0deg, rgba(14,13,12,.96) 0%, rgba(14,13,12,.72) 34%, rgba(14,13,12,.1) 62%);
+  }
+  .stage-copy{max-width:100%;}
+}
+@media (max-width:560px){
+  .exhibit-index{grid-template-columns:1fr;}
+  .stage-copy{max-width:100%;padding:20px;}
+  .stage-copy h3{font-size:1.9rem;}
+  .stage-plate{width:min(64%,180px);}
+  .stage-fallback .fb-title{font-size:1.4rem;}
+}
+@media (hover:none){ .stage-layers,.stage-art,.stage-copy,.stage-plate{transform:none !important;} }
+@media (prefers-reduced-motion: reduce){
+  .stage-layers,.stage-art,.stage-copy,.stage-plate{transition-duration:.12s !important;}
+}
+
+/* ============================================================
+   13. GAMES — rows with a real cover thumbnail, deliberately
+   distinct from the Anime exhibition (list, not a single stage).
+   ============================================================ */
+.games-archive{border-top:1px solid var(--line);}
+.game-row-cinematic{
+  position:relative;width:100%;text-align:left;cursor:pointer;
+  display:grid;grid-template-columns:44px 1fr 60px 36px;align-items:center;gap:18px;
+  min-height:104px;border-bottom:1px solid var(--line);padding:14px 10px;
+  transition:padding-left .4s var(--ease), background-color .3s ease;
+}
+.game-row-cinematic{isolation:isolate;}
+.game-row-cinematic:hover,.game-row-cinematic:focus-visible{padding-left:20px;background:var(--ink-soft);}
+.game-row-backdrop{
+  position:absolute;inset:0;z-index:-1;overflow:hidden;
+  clip-path:inset(0 0 0 100%);
+  transition:clip-path .55s var(--ease);
+}
+.game-row-backdrop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.24;filter:saturate(.7);}
+.game-row-backdrop::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg, var(--ink) 18%, transparent 72%);}
+.game-row-cinematic:hover .game-row-backdrop,.game-row-cinematic:focus-visible .game-row-backdrop{clip-path:inset(0 0 0 0%);}
+@media (prefers-reduced-motion: reduce){ .game-row-backdrop{transition:none;} }
+.game-row-cinematic .g-no{font-family:var(--font-mono);font-size:.78rem;color:var(--paper-faint);}
+.game-row-cinematic .g-name{
+  display:block;font-family:var(--font-display);font-weight:700;font-size:clamp(1.25rem,2.8vw,1.9rem);
+  text-transform:uppercase;transition:transform .4s var(--ease);
+}
+.game-row-cinematic:hover .g-name{transform:translateX(8px);}
+.game-row-cinematic .g-genre{display:block;margin-top:4px;color:var(--paper-faint);font-size:.82rem;}
+/* Box art is 600x900 (2:3). The container matches that ratio exactly,
+   so `cover` fills without cropping anything off the sides. */
+.game-art-sliver{
+  position:relative;overflow:hidden;width:60px;height:90px;border:1px solid var(--line);
+  border-radius:2px;
+  background:radial-gradient(120% 140% at 20% -10%, var(--card-a) 0%, transparent 60%),
+             radial-gradient(120% 140% at 100% 120%, var(--card-b) 0%, transparent 60%),
+             var(--graphite);
+  transition:transform .4s var(--ease-spring), box-shadow .4s var(--ease);
+}
+.game-row-cinematic:hover .game-art-sliver{transform:scale(1.06) rotate(1deg);box-shadow:0 8px 22px -8px rgba(0,0,0,.5);}
+.game-art-sliver img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s ease;}
+.game-art-sliver img.is-loaded{opacity:1;}
+.game-art-sliver .g-mono{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:1.1rem;color:rgba(243,238,227,.4);}
+.game-row-cinematic .g-arrow{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);color:var(--paper-faint);transition:border-color .3s ease,color .3s ease;}
+.game-row-cinematic:hover .g-arrow{border-color:var(--paper);color:var(--paper);}
+.game-row-cinematic .g-arrow svg{width:16px;height:16px;}
+@media (max-width:640px){ .game-row-cinematic{grid-template-columns:30px 1fr 44px 28px;gap:12px;} .game-art-sliver{width:44px;height:66px;} }
+
+.game-drawer{
+  position:fixed;z-index:115;inset:auto 20px 20px auto;width:min(400px,calc(100vw - 40px));
+  background:var(--paper);color:var(--ink);box-shadow:var(--shadow-card);
+  transform:translateY(calc(100% + 40px));transition:transform .5s var(--ease);overflow:hidden;
+}
+.game-drawer.is-open{transform:translateY(0);}
+/* The drawer used to crush 2:3 box art into a 400x150 letterbox. It is
+   now a card: the art blurred behind for colour, the cover shown whole. */
+.game-drawer-art{
+  position:relative;height:190px;overflow:hidden;display:flex;align-items:center;
+  padding:0 20px;
+  background:radial-gradient(120% 160% at 15% 0%, var(--card-a) 0%, transparent 62%),
+             radial-gradient(120% 160% at 100% 100%, var(--card-b) 0%, transparent 62%),
+             var(--charcoal);
+}
+.game-drawer-art .g-blur{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:blur(22px) brightness(.5) saturate(1.1);transform:scale(1.2);
+  opacity:0;transition:opacity .5s ease;
+}
+.game-drawer-art .g-blur.is-loaded{opacity:.9;}
+.game-drawer-art .g-cover{
+  position:relative;z-index:1;height:150px;width:100px;flex:none;
+  object-fit:contain;
+  background:rgba(10,9,8,.5);
+  border:1px solid rgba(243,238,227,.18);
+  box-shadow:0 18px 34px -14px rgba(0,0,0,.9);
+  opacity:0;transition:opacity .45s ease;
+}
+.game-drawer-art .g-cover.is-loaded{opacity:1;}
+.game-drawer-art .g-glyph{z-index:1;margin-left:18px;position:absolute;right:14px;bottom:-16px;font-family:var(--font-display);font-weight:800;font-size:4.6rem;color:rgba(14,13,12,.14);line-height:1;}
+.game-drawer-copy{padding:24px 26px;}
+.game-drawer-copy .kicker{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--steel);text-transform:uppercase;}
+.game-drawer-copy h3{margin:.4rem 0;font-size:1.6rem;text-transform:uppercase;max-width:14ch;}
+.game-drawer-copy p{font-size:.9rem;color:var(--charcoal);}
+.drawer-close{position:absolute;top:12px;right:12px;z-index:2;width:36px;height:36px;display:grid;place-items:center;background:var(--ink);color:var(--paper);}
+.drawer-close svg{width:16px;height:16px;}
+@media (max-width:560px){ .game-drawer{inset:auto 10px 10px auto;width:calc(100vw - 20px);} }
+@media (prefers-reduced-motion: reduce){ .game-row-cinematic,.game-art-sliver,.game-drawer{transition-duration:.12s !important;} }
+
+/* ============================================================
+   15. RESUME PANEL
+   ============================================================ */
+.resume-panel{
+  border:1px solid var(--line);padding:44px;
+}
+.resume-head{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid var(--line);}
+.resume-head h3{font-size:1.8rem;text-transform:none;letter-spacing:0;}
+.resume-head .role{margin-top:6px;color:var(--paper-dim);font-size:.98rem;}
+.resume-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:30px;}
+@media (max-width:700px){ .resume-cols{grid-template-columns:1fr;} }
+.resume-block h4{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-faint);}
+.resume-block p{margin-top:10px;color:var(--paper-dim);font-size:.95rem;}
+.resume-actions{margin-top:34px;display:flex;gap:16px;flex-wrap:wrap;}
+
+/* ============================================================
+   16. CONTACT
+   ============================================================ */
+.contact-panel h2{
+  font-size:clamp(2.2rem,6vw,4rem);text-transform:none;letter-spacing:-.01em;
+  max-width:16ch;
+  font-family:var(--font-voice);font-style:italic;font-weight:500;line-height:1.15;
+}
+.contact-links{margin-top:48px;display:flex;flex-direction:column;}
+.contact-link{
+  display:flex;align-items:center;gap:18px;
+  padding-block:26px;border-top:1px solid var(--line);
+  text-align:left;width:100%;
+}
+.contact-links a.contact-link:last-child,.contact-links button.contact-link:last-child{border-bottom:1px solid var(--line);}
+.contact-link svg{width:22px;height:22px;color:var(--paper-faint);flex:none;}
+.contact-link .lbl{font-family:var(--font-mono);font-size:.72rem;color:var(--paper-faint);letter-spacing:.08em;}
+.contact-link .val{font-family:var(--font-display);font-weight:600;font-size:1.4rem;text-transform:uppercase;}
+.contact-link:hover .val{color:var(--vermilion-bright);}
+.copy-status{margin-left:auto;font-size:.82rem;color:var(--amber-bright);}
+
+footer{border-top:1px solid var(--line);padding-block:28px;}
+.footer-inner{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.8rem;color:var(--paper-faint);}
+
+/* ============================================================
+   17. COMMAND PALETTE
+   ============================================================ */
+.palette-overlay{
+  position:fixed;inset:0;z-index:110;
+  background:rgba(14,13,12,.7);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding-top:14vh;padding-inline:20px;
+  opacity:0;visibility:hidden;
+  transition:opacity .25s ease, visibility .25s;
+}
+.palette-overlay.is-open{opacity:1;visibility:visible;}
+.palette{
+  width:100%;max-width:520px;
+  background:var(--charcoal);border:1px solid var(--line-strong);
+  box-shadow:var(--shadow-card);
+  transform:translateY(-14px) scale(.97);
+  transition:transform .38s var(--ease-spring);
+}
+.palette-overlay.is-open .palette{transform:translateY(0) scale(1);}
+.palette-input-row{
+  display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line);
+}
+.palette-input-row svg{width:17px;height:17px;color:var(--paper-faint);flex:none;transition:color .25s ease,transform .25s var(--ease-spring);}
+.palette-input-row:focus-within svg{color:var(--vermilion-bright);transform:scale(1.1);}
+.palette-input-row input{flex:1;font-size:1rem;color:var(--paper);}
+.palette-input-row input::placeholder{color:var(--paper-faint);}
+.palette-list{list-style:none;margin:0;padding:8px;max-height:340px;overflow-y:auto;overscroll-behavior:contain;}
+.palette-list li button{
+  width:100%;display:flex;justify-content:space-between;align-items:center;
+  padding:12px 14px;font-size:.95rem;color:var(--paper-dim);border-radius:3px;
+  transform:translateX(0);
+  transition:background-color .2s ease, color .2s ease, transform .25s var(--ease-spring);
+}
+.palette-list li button svg{width:15px;height:15px;opacity:.6;transition:transform .25s var(--ease-spring);}
+.palette-list li button.is-active,.palette-list li button:hover{background:var(--graphite);color:var(--paper);transform:translateX(3px);}
+.palette-list li button.is-active svg,.palette-list li button:hover svg{transform:translateX(2px);opacity:1;}
+.palette-empty{padding:14px;color:var(--paper-faint);font-size:.92rem;}
+.palette-group{
+  padding:12px 12px 6px;font:500 .6rem var(--font-mono);
+  letter-spacing:var(--tracking-wide,.24em);color:var(--paper-faint);opacity:.6;
+}
+.palette-list li button{justify-content:flex-start;}
+.palette-hint{
+  margin-left:auto;font:500 .58rem var(--font-mono);letter-spacing:.14em;
+  color:var(--paper-faint);border:1px solid var(--line);padding:2px 6px;border-radius:2px;
+}
+.palette-chevron{display:inline-flex;margin-left:8px;}
+.palette-list li button.is-active .palette-hint{color:var(--paper-dim);border-color:var(--line-strong);}
+/* Confirmation for actions that have no visible result of their own. */
+.palette-toast{
+  position:fixed;left:50%;bottom:28px;z-index:var(--z-dialog,140);
+  transform:translate3d(-50%,10px,0);
+  padding:10px 18px;background:var(--paper);color:var(--ink);
+  font:500 .72rem var(--font-mono);letter-spacing:.12em;text-transform:uppercase;
+  opacity:0;pointer-events:none;
+  transition:opacity .2s ease,transform .28s var(--ease);
+}
+.palette-toast.is-on{opacity:1;transform:translate3d(-50%,0,0);}
+
+/* ---------- Section seams ----------
+   The band between two sections, where one world's visual language is
+   drawn becoming the next one's. */
+.seam{
+  position:relative;
+  height:120px;
+  margin:0 auto;
+  max-width:1180px;
+  padding-inline:28px;
+  pointer-events:none;
+}
+.seam-svg{width:100%;height:100%;overflow:visible;}
+.seam-mark,.seam-link{
+  fill:none;
+  vector-effect:non-scaling-stroke;
+  stroke-dasharray:1;
+  stroke-dashoffset:1;
+  transition:stroke-dashoffset .9s var(--ease) calc(var(--i,0) * 24ms);
+}
+.seam.is-in .seam-mark,
+.seam.is-in .seam-link{stroke-dashoffset:0;}
+.seam-from{stroke:var(--paper-faint);stroke-width:1;opacity:.75;}
+.seam-to{stroke:var(--paper-dim);stroke-width:1;}
+/* The connecting curves are the transformation itself, so they carry
+   the accent while the two edges stay neutral. */
+.seam-link{stroke:var(--vermilion);stroke-width:.75;opacity:.5;}
+.seam-label{
+  position:absolute;right:28px;top:50%;transform:translateY(-50%);
+  font:500 .58rem var(--font-mono);letter-spacing:.2em;
+  color:var(--paper-faint);opacity:0;
+  transition:opacity .6s ease .5s;
+}
+.seam.is-in .seam-label{opacity:.42;}
+/* ---------- Driving -> Cars: the road becomes the floor ----------
+   Two sets of lines occupying the same space. As --rs goes 0 -> 1 the
+   converging lane markings straighten and spread into the flat grid of
+   the showroom floor, so the boundary is one surface changing rather
+   than two sections meeting. */
+.seam-road{height:230px;--rs:0;}
+.rs-stage{
+  position:relative;height:100%;
+  perspective:520px;perspective-origin:50% 0%;
+  overflow:hidden;
+}
+/* Lane markings: converge at the top, fan out toward the viewer. */
+.rs-lane{
+  position:absolute;left:50%;bottom:0;
+  width:2px;height:100%;
+  background:linear-gradient(transparent,var(--paper-dim));
+  opacity:calc(.5 - var(--rs) * .5);
+  transform-origin:50% 0%;
+  transform:
+    translateX(-50%)
+    rotate(calc((var(--l) - 4) * (14deg - var(--rs) * 14deg)))
+    scaleY(calc(1 - var(--rs) * .55));
+}
+/* Showroom floor: horizontal rules that arrive as the lanes flatten. */
+.rs-floor{
+  position:absolute;left:0;right:0;
+  height:1px;background:var(--line-strong);
+  bottom:calc(var(--f) * 18%);
+  transform:scaleX(calc(var(--rs) * 1));
+  transform-origin:center;
+  opacity:calc(var(--rs) * .85);
+}
+.seam-road .seam-label{opacity:calc(var(--rs) * .5);transition:none;}
+@media (max-width:720px){ .seam-road{height:140px;} }
+@media (prefers-reduced-motion: reduce){
+  .rs-lane{opacity:.28;transform:translateX(-50%);}
+  .rs-floor{transform:scaleX(1);opacity:.6;}
+}
+
+@media (max-width:720px){
+  .seam{height:78px;padding-inline:20px;}
+  .seam-label{display:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  .seam-mark,.seam-link{transition:none;stroke-dashoffset:0;}
+  .seam-label{transition:none;opacity:.42;}
+}
+html[data-motion="reduced"] .seam-mark,
+html[data-motion="reduced"] .seam-link{transition:none;stroke-dashoffset:0;}
+@media (prefers-reduced-motion: reduce){
+  .palette{transition-duration:.12s;}
+  .palette-list li button{transition-duration:.12s;}
+}
+
+/* ============================================================
+   18. SCROLL REVEAL
+   ============================================================ */
+/* ---------- Reveal ----------
+   These are the vanilla half of the site's motion. They deliberately
+   mirror the React primitives in src/styles/motion.css: same durations,
+   same easing, same travel distance, same stagger step — so scrolling
+   from Certification into Manga does not feel like crossing between two
+   different websites.
+
+   Timing: 720ms / 22px. The previous 800ms / 26px read as sluggish, and
+   nothing here is a hero moment that earns extra dwell. */
+.reveal{
+  opacity:0;transform:translate3d(0,22px,0);
+  transition:
+    opacity 720ms var(--ease) var(--rd,0ms),
+    transform 720ms var(--ease) var(--rd,0ms);
+}
+.reveal.is-visible{opacity:1;transform:none;}
+
+/* A wipe rather than a fade — the content is uncovered. */
+.reveal-clip{
+  clip-path:inset(0 100% 0 0);opacity:0;transform:translate3d(0,10px,0);
+  transition:
+    clip-path 720ms var(--ease-emphasis,cubic-bezier(.16,1,.3,1)) var(--rd,0ms),
+    opacity 420ms var(--ease) var(--rd,0ms),
+    transform 720ms var(--ease-emphasis,cubic-bezier(.16,1,.3,1)) var(--rd,0ms);
+}
+.reveal-clip.is-visible{clip-path:inset(0 0 0 0);opacity:1;transform:none;}
+
+/* Used for composed blocks (the exhibit). Scale travel is small; a big
+   scale-in reads as a popup, not as an object settling. */
+.reveal-scale{
+  opacity:0;transform:scale(.975) translate3d(0,14px,0);
+  transition:
+    opacity 560ms var(--ease) var(--rd,0ms),
+    transform 720ms var(--ease-emphasis,cubic-bezier(.16,1,.3,1)) var(--rd,0ms);
+}
+.reveal-scale.is-visible{opacity:1;transform:none;}
+
+/* Directional variants, so a reveal can carry meaning about where the
+   content came from instead of everything rising identically. */
+.reveal-left{transform:translate3d(-26px,0,0);}
+.reveal-right{transform:translate3d(26px,0,0);}
+.reveal-left.is-visible,.reveal-right.is-visible{transform:none;}
+
+.stagger .reveal-scale,.stagger .reveal{transition-delay:calc(var(--i, 0) * 55ms);}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal,.reveal-clip,.reveal-scale{transition:opacity .2s ease !important;transform:none !important;clip-path:none !important;}
+}
+
+/* ============================================================
+   19. RESPONSIVE MISC
+   ============================================================ */
+@media (max-width:640px){
+  .section-head{margin-bottom:40px;}
+  .cert-doc{padding:38px 28px;}
+}
+
+/* ============================================================
+   19. AMBIENT DETAIL LAYER — grain, hero depth, scroll cue, cursor
+   ============================================================ */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.13;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+  mix-blend-mode:soft-light;
+}
+.hero{isolation:isolate;perspective:1200px;}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:34%;pointer-events:none;z-index:-1;background:linear-gradient(transparent,var(--ink));}
+.hero .container{
+  transform:
+    translate3d(calc(var(--hero-x, 0) * .45px), calc(calc(var(--hero-y, 0) * .32px) + var(--hero-scroll-y, 0px)), 0)
+    scale(var(--hero-scroll-scale, 1));
+  opacity:var(--hero-scroll-fade, 1);
+  transition:transform .25s var(--ease);
+}
+.hero h1{
+  letter-spacing:var(--hero-track,-.01em);
+  transform:translate3d(var(--hero-shift,0px),0,0);
+  /* Driven from scroll, so no transition — a transition here would lag
+     behind the wheel and read as rubber-banding. */
+}
+/* The rule the hero hands off to About. It draws as the hero leaves and
+   sits exactly where About's first line begins. */
+.hero::before{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,var(--vermilion-bright),var(--amber-bright) 40%,var(--line) 100%);
+  transform:scaleX(var(--hero-handoff,0));transform-origin:left;
+  z-index:2;pointer-events:none;
+}
+.hero-kicker,.hero h1,.hero-voice,.hero-body,.hero-ctas,.hero-meta{will-change:transform,opacity;}
+.hero-scroll-cue{
+  position:absolute;right:max(28px,calc((100vw - 1180px)/2));bottom:34px;display:flex;gap:10px;align-items:center;
+  font:500 .66rem var(--font-mono);letter-spacing:.16em;color:var(--paper-faint);text-transform:uppercase;transition:opacity .4s ease;
+}
+.hero-scroll-cue .shaft{height:56px;width:1px;background:var(--line-strong);overflow:hidden;position:relative;}
+.hero-scroll-cue .shaft::after{content:"";position:absolute;left:0;width:100%;height:38%;background:var(--vermilion-bright);animation:scrollCue 1.8s ease-in-out infinite;}
+body.has-scrolled .hero-scroll-cue{opacity:0;pointer-events:none;}
+@keyframes scrollCue{0%{transform:translateY(-110%)}65%,100%{transform:translateY(290%)}}
+
+.exhibit{transform:translate3d(0,var(--exhibit-scroll,0),0);will-change:transform;}
+
+/* ---------- Custom pointer: a state machine, mouse-only ----------
+   One cursor element for the whole site. Sections opt into a state by
+   putting data-cursor="..." on any element; the nearest ancestor with
+   that attribute wins. Never add a second cursor system. */
+.motion-cursor{
+  position:fixed;z-index:var(--z-cursor,160);left:0;top:0;
+  width:10px;height:10px;
+  pointer-events:none;opacity:0;
+  transform:translate3d(-50%,-50%,0);
+  transition:opacity .2s ease;
+  will-change:transform;
+}
+.motion-cursor.is-active{opacity:1;}
+.motion-cursor-ring{
+  position:absolute;inset:0;
+  border:1px solid rgba(243,238,227,.85);
+  border-radius:50%;
+  transition:
+    width .26s var(--ease),height .26s var(--ease),
+    margin .26s var(--ease),
+    border-color .26s ease,border-radius .26s var(--ease),
+    background-color .26s ease,opacity .2s ease;
+}
+/* The plain ring reads against any background; labelled states carry
+   their own contrast, so blending is scoped to the ring alone. */
+.motion-cursor[data-state="default"] .motion-cursor-ring,
+.motion-cursor[data-state="link"] .motion-cursor-ring{
+  mix-blend-mode:difference;
+}
+.motion-cursor-label{
+  position:absolute;left:50%;top:50%;
+  transform:translate3d(-50%,-50%,0) scale(.7);
+  font:500 .56rem var(--font-mono);
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink);white-space:nowrap;
+  opacity:0;
+  transition:opacity .2s ease,transform .26s var(--ease);
+}
+.motion-cursor[data-label] .motion-cursor-label{opacity:1;transform:translate3d(-50%,-50%,0) scale(1);}
+
+/* Crosshair arms — only drawn for the technical/3D states. */
+.motion-cursor-cross{position:absolute;inset:0;opacity:0;transition:opacity .22s ease;}
+.motion-cursor-cross::before,
+.motion-cursor-cross::after{
+  content:"";position:absolute;background:var(--vermilion-bright);
+}
+.motion-cursor-cross::before{left:50%;top:-7px;bottom:-7px;width:1px;transform:translateX(-50%);}
+.motion-cursor-cross::after{top:50%;left:-7px;right:-7px;height:1px;transform:translateY(-50%);}
+.motion-cursor[data-state="tech"] .motion-cursor-cross,
+.motion-cursor[data-state="3d"] .motion-cursor-cross{opacity:1;}
+
+/* ── States ── */
+.motion-cursor[data-state="link"] .motion-cursor-ring{
+  width:26px;height:26px;margin:-8px;
+}
+.motion-cursor[data-state="image"] .motion-cursor-ring,
+.motion-cursor[data-state="view"] .motion-cursor-ring{
+  width:64px;height:64px;margin:-27px;
+  border-color:var(--paper);
+  background:rgba(243,238,227,.92);
+}
+.motion-cursor[data-state="open"] .motion-cursor-ring{
+  width:58px;height:58px;margin:-24px;
+  border-color:var(--vermilion-bright);
+  background:var(--vermilion-bright);
+}
+.motion-cursor[data-state="open"] .motion-cursor-label{color:var(--paper);}
+.motion-cursor[data-state="close"] .motion-cursor-ring{
+  width:40px;height:40px;margin:-15px;
+  border-color:var(--paper);background:rgba(243,238,227,.9);
+}
+.motion-cursor[data-state="drag"] .motion-cursor-ring{
+  width:62px;height:62px;margin:-26px;border-radius:3px;
+  border-color:var(--paper-dim);background:rgba(243,238,227,.88);
+}
+/* 3D / car: an orbit ring rather than a filled disc, so the vehicle
+   stays visible underneath it. */
+.motion-cursor[data-state="3d"] .motion-cursor-ring,
+.motion-cursor[data-state="car"] .motion-cursor-ring{
+  width:44px;height:44px;margin:-17px;
+  border-color:var(--vermilion-bright);
+  border-style:dashed;
+  background:transparent;
+}
+.motion-cursor[data-state="car"] .motion-cursor-label{color:var(--vermilion-bright);}
+.motion-cursor[data-state="tech"] .motion-cursor-ring{
+  width:22px;height:22px;margin:-6px;border-radius:2px;
+  border-color:var(--vermilion-bright);background:transparent;
+}
+.motion-cursor[data-state="manga"] .motion-cursor-ring{
+  width:52px;height:52px;margin:-21px;border-radius:2px 6px 6px 2px;
+  border-color:var(--amber-bright);background:rgba(217,154,78,.9);
+}
+.motion-cursor[data-state="manga"] .motion-cursor-label{color:var(--ink);}
+.motion-cursor[data-state="scroll"] .motion-cursor-ring{
+  width:34px;height:48px;margin:-12px -12px;border-radius:20px;
+  border-color:var(--paper-dim);background:transparent;
+}
+
+@media (max-width:560px){
+  .hero-scroll-cue{display:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  .hero .container{transition-duration:.01ms !important;transform:none !important;}
+  .hero h1{letter-spacing:-.01em !important;transform:none !important;}
+  .hero::before{transform:scaleX(1);}
+  .exhibit{transform:none !important;}
+  .hero-scroll-cue .shaft::after{animation:none;}
+  .motion-cursor{display:none;}
+}
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <div class="header-inner">
+    <a href="#home" class="wordmark">Rahil Shah<span class="dot">.</span></a>
+
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#anime">Anime</a></li>
+        <li><a href="#games">Games</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button class="palette-trigger" id="paletteTrigger" type="button" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <span class="label">Search</span>
+        <span class="kbd-row" aria-hidden="true"><kbd>&#8984;</kbd><kbd>K</kbd></span>
+      </button>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="index-rail" id="indexRail" aria-label="Section index">
+  <!-- populated by JS -->
+</nav>
+
+<main id="main">
+
+  <!-- ============================================================ HERO ============================================================ -->
+  <section id="home" class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-spot" id="heroSpot" aria-hidden="true"></div>
+    <div class="container">
+      <p class="hero-kicker">Mumbai, Maharashtra, India</p>
+      <h1 aria-label="Rahil Shah">
+        <span class="line" aria-hidden="true"><span class="ch" style="--i:0">R</span><span class="ch" style="--i:1">a</span><span class="ch" style="--i:2">h</span><span class="ch" style="--i:3">i</span><span class="ch" style="--i:4">l</span></span>
+        <span class="line" aria-hidden="true"><span class="ch" style="--i:0">S</span><span class="ch" style="--i:1">h</span><span class="ch" style="--i:2">a</span><span class="ch" style="--i:3">h</span></span>
+      </h1>
+      <p class="hero-voice">Curious IT student exploring AI.</p>
+      <p class="hero-body">Experienced in running local LLMs with OpenWebUI and experimenting with context engineering and prompt engineering — alongside hands-on hardware work and a fairly opinionated anime list.</p>
+      <div class="hero-ctas">
+        <a href="#about" class="btn btn-primary">Explore My Journey</a>
+        <a href="#resume" class="link-arrow">View Resume <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="hero-meta">
+        <div><strong>B.Tech Integrated, IT</strong>NMIMS MPSTME</div>
+        <div><strong>2022 &ndash; 2028</strong>Currently enrolled</div>
+        <div><strong>Local LLMs</strong>OpenWebUI &amp; prompt/context engineering</div>
+      </div>
+    </div>
+    <div class="hero-scroll-cue" aria-hidden="true"><span>Scroll</span><span class="shaft"></span></div>
+  </section>
+
+  <!-- ============================================================ ABOUT ============================================================ -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="reveal">
+          <p class="about-statement">&ldquo;I&rsquo;m a curious IT student exploring AI &mdash; more interested in how far a model can be pushed than in using it out of the box.&rdquo;</p>
+          <p class="about-body">I&rsquo;m experienced in running local LLMs with OpenWebUI, and I spend a lot of my time experimenting with context engineering and prompt engineering &mdash; figuring out how to get more out of the models I run, rather than treating them as fixed tools.</p>
+        </div>
+        <div class="about-meta reveal">
+          <dl>
+            <div><dt>Name</dt><dd>Rahil Shah</dd></div>
+            <div><dt>Based in</dt><dd>Mumbai, Maharashtra, India</dd></div>
+            <div><dt>Email</dt><dd>rahilsshah2@gmail.com</dd></div>
+            <div><dt>LinkedIn</dt><dd>/in/rahilshah&#8209;profile</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ EDUCATION ============================================================ -->
+  <section id="education">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="mark"><span>Education</span></div>
+        <h2>The Long Way to<br>a Degree</h2>
+      </div>
+
+      <div class="edu-track reveal">
+        <span class="edu-year">2022</span>
+        <span class="edu-line">
+          <span class="edu-line-fill"></span>
+          <!-- One tick per academic year across the stated Jan 2022 - May
+               2028 span. Nothing is asserted beyond that range. -->
+          <span class="edu-ticks" aria-hidden="true">
+            <span class="edu-tick" style="--t:0"><i>2022</i></span>
+            <span class="edu-tick" style="--t:1"><i>2023</i></span>
+            <span class="edu-tick" style="--t:2"><i>2024</i></span>
+            <span class="edu-tick" style="--t:3"><i>2025</i></span>
+            <span class="edu-tick" style="--t:4"><i>2026</i></span>
+            <span class="edu-tick" style="--t:5"><i>2027</i></span>
+            <span class="edu-tick" style="--t:6"><i>2028</i></span>
+          </span>
+        </span>
+        <span class="edu-year end">2028</span>
+      </div>
+
+      <div class="edu-detail reveal">
+        <div>
+          <h3>SVKM&rsquo;s NMIMS Mukesh Patel School of Technology Management &amp; Engineering</h3>
+          <p class="degree">Bachelor of Technology Integrated &mdash; Information Technology</p>
+        </div>
+        <div>
+          <p class="loc">JANUARY 2022 &mdash; MAY 2028</p>
+          <p class="loc" style="margin-top:8px;">MUMBAI, MAHARASHTRA, INDIA</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ SKILLS ============================================================ -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="mark"><span>Skills</span></div>
+        <h2>How the Pieces<br>Connect</h2>
+        <p class="lede">Three things I actively work with, not a scorecard of percentages.</p>
+      </div>
+
+      <div class="skills-diagram reveal">
+        <div class="skills-nodes stagger">
+          <button type="button" class="skill-node reveal-scale" style="--i:0">
+            <span class="n">01</span>
+            <h3>Local LLM Deployment</h3>
+            <p>Running open models locally through OpenWebUI &mdash; the substrate everything else here is built on.</p>
+          </button>
+          <span class="skills-connector" aria-hidden="true" style="--bi:0"></span>
+          <button type="button" class="skill-node reveal-scale" style="--i:1">
+            <span class="n">02</span>
+            <h3>Prompt Engineering</h3>
+            <p>Shaping instructions deliberately, rather than accepting the first output a model gives back.</p>
+          </button>
+          <span class="skills-connector" aria-hidden="true" style="--bi:1"></span>
+          <button type="button" class="skill-node reveal-scale" style="--i:2">
+            <span class="n">03</span>
+            <h3>Context Engineering</h3>
+            <p>Structuring what a model sees &mdash; and when &mdash; to get more consistent, useful results.</p>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ CERTIFICATION ============================================================ -->
+  <section id="certification">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="mark"><span>Certification</span></div>
+        <h2>On Record</h2>
+      </div>
+      <div class="cert-wrap reveal-scale">
+        <div class="cert-doc">
+          <p class="cert-kicker">CERTIFICATE OF COMPLETION</p>
+          <h3>AI Fluency Framework &amp; Foundations</h3>
+          <p class="cert-name">Awarded for completing the program</p>
+          <hr>
+          <p class="cert-name-holder">Rahil Shah</p>
+          <div class="cert-seal" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ TECHNICAL WORK ============================================================ -->
+  <section id="work">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="mark"><span>Technical Work</span></div>
+        <h2>In the Workshop</h2>
+        <p class="lede">Two things I&rsquo;m actively building &mdash; both honestly framed as work in progress.</p>
+      </div>
+
+      <div class="work-list">
+        <article class="work-item reveal">
+          <div class="tag"><span class="wf-no">FILE 01</span><span class="dot"></span>HARDWARE</div>
+          <div class="work-body">
+            <h3>Raspberry Pi 5</h3>
+            <p>Working with a Raspberry Pi 5 and a hardware/sensor setup. This is early, hands-on hardware exploration &mdash; the specifics of the build are still taking shape.</p>
+            <dl class="work-record">
+              <div><dt>MEDIUM</dt><dd>Hardware / sensors</dd></div>
+              <div><dt>STAGE</dt><dd class="is-live">In progress</dd></div>
+              <div><dt>SCOPE</dt><dd>Hands-on build</dd></div>
+            </dl>
+            <div class="work-schematic" aria-hidden="true">
+              <svg viewBox="0 0 420 140" fill="none" stroke="currentColor" stroke-width="1">
+                <rect x="10" y="20" width="100" height="100" rx="2" pathLength="1"/>
+                <circle cx="30" cy="40" r="3" pathLength="1"/><circle cx="90" cy="40" r="3" pathLength="1"/><circle cx="30" cy="100" r="3" pathLength="1"/><circle cx="90" cy="100" r="3" pathLength="1"/>
+                <path d="M110 40 H180 M110 70 H200 M110 100 H180" stroke-dasharray="3 4" pathLength="1"/>
+                <rect x="200" y="55" width="40" height="30" rx="2" pathLength="1"/>
+                <path d="M240 70 H300" stroke-dasharray="3 4" pathLength="1"/>
+                <circle cx="330" cy="70" r="30" pathLength="1"/>
+                <path d="M330 50 V90 M310 70 H350" pathLength="1"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+
+        <article class="work-item reveal">
+          <div class="tag"><span class="wf-no">FILE 02</span><span class="dot"></span>SOFTWARE</div>
+          <div class="work-body">
+            <h3>Depression&#8209;Aware AI Architecture</h3>
+            <p>Exploring an AI chatbot architecture built specifically around depression detection &mdash; a concept-stage exploration, not a clinical or deployed tool.</p>
+            <dl class="work-record">
+              <div><dt>MEDIUM</dt><dd>AI architecture</dd></div>
+              <div><dt>STAGE</dt><dd class="is-concept">Concept</dd></div>
+              <div><dt>SCOPE</dt><dd>Not clinical, not deployed</dd></div>
+            </dl>
+            <div class="work-schematic" aria-hidden="true">
+              <svg viewBox="0 0 420 120" fill="none" stroke="currentColor" stroke-width="1">
+                <rect x="10" y="45" width="70" height="30" rx="2" pathLength="1"/>
+                <path d="M80 60 H150" stroke-dasharray="3 4" pathLength="1"/>
+                <rect x="150" y="30" width="90" height="60" rx="2" pathLength="1"/>
+                <path d="M195 30 V15 M195 90 V105 M150 60 H120 M240 60 H270" stroke-dasharray="3 4" pathLength="1"/>
+                <rect x="270" y="45" width="70" height="30" rx="2" pathLength="1"/>
+                <path d="M340 60 H390" stroke-dasharray="3 4" pathLength="1"/>
+                <circle cx="405" cy="60" r="8" pathLength="1"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ BEYOND THE RESUME ============================================================ -->
+  <section id="beyond">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="mark"><span>Off the Clock</span></div>
+        <h2>Beyond the Resume</h2>
+      </div>
+      <p class="beyond-intro reveal">None of this is professional experience &mdash; it&rsquo;s what I spend free time on. Anime and Games get their own sections below.</p>
+      <div class="interest-index reveal">
+        <a href="#anime" class="item">Anime<small>Top 10 below</small></a>
+        <a href="#manga" class="item">Manga</a>
+        <a href="#technology" class="item">Technology</a>
+        <a href="#games" class="item">Gaming<small>Favourites below</small></a>
+        <a href="#driving" class="item">Driving</a>
+        <a href="#cars" class="item">Cars</a>
+        <a href="#engineering" class="item">Engineering</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ANIME ============================================================ -->
+  <section id="anime">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="mark"><span>Signature</span></div>
+        <h2>Top 10 Anime</h2>
+        <p class="lede">Ranked, locked, and not up for debate.</p>
+      </div>
+      <p class="anime-note reveal">Real artwork, loaded from local files &mdash; drop images into <code>assets/anime/</code> and they show up automatically. Browse with the list, the controls, or focus the stage and press the arrow keys.</p>
+
+      <div class="exhibit reveal-scale">
+        <ol class="exhibit-index" id="exhibitIndex" aria-label="Anime ranking"></ol>
+
+        <section class="exhibit-stage" id="exhibitStage" tabindex="0" aria-label="Selected anime. Use left and right arrow keys to browse, Home and End to jump to the ends.">
+          <div class="stage-layers">
+            <!-- Atmosphere: the same artwork, blown up and blurred, used
+                 purely as colour. It is allowed to crop; nothing is read
+                 from it. -->
+            <div class="stage-art">
+              <img class="stage-bg" id="stageBg" alt="" aria-hidden="true" decoding="async">
+            </div>
+            <div class="stage-scrim" aria-hidden="true"></div>
+            <!-- The exhibited print: complete artwork, never cropped. -->
+            <figure class="stage-plate" id="stagePlate">
+              <div class="stage-fallback" aria-hidden="true">
+                <span class="fb-rule"></span>
+                <span class="fb-title" id="stageGlyph"></span>
+                <span class="fb-note">ARTWORK NOT ON FILE</span>
+              </div>
+              <img class="stage-img" id="stageImg" alt="" loading="eager" decoding="async">
+            </figure>
+            <div class="stage-glare" aria-hidden="true"></div>
+            <span class="stage-rank" id="stageRank"></span>
+            <div class="stage-copy">
+              <p class="stage-count" id="stageCount"></p>
+              <h3 id="stageTitle"></h3>
+              <p id="stageAbout"></p>
+            </div>
+          </div>
+          <div class="stage-controls">
+            <button type="button" class="icon-btn" id="stagePrev" aria-label="Previous anime"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <button type="button" class="icon-btn" id="stageNext" aria-label="Next anime"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+          </div>
+        </section>
+      </div>
+      <div class="exhibit-strip" id="exhibitStrip" aria-hidden="true"></div>
+      <p class="visually-hidden" id="stageAnnounce" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- ============================================================ MANGA ============================================================ -->
+  <section id="manga">
+    <div class="container" id="manga-root"></div>
+  </section>
+
+  <!-- ============================================================ TECHNOLOGY ============================================================ -->
+  <section id="technology">
+    <div class="container" id="technology-root"></div>
+  </section>
+
+  <!-- ============================================================ GAMES ============================================================ -->
+  <section id="games">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="mark"><span>On the Side</span></div>
+        <h2>Games</h2>
+        <p class="lede">A short list. No hour counts, no achievements.</p>
+      </div>
+      <p class="anime-note reveal">Same deal as the anime list &mdash; real cover art from <code>assets/games/</code>, with a clean fallback wherever a file isn&rsquo;t there yet.</p>
+      <div class="games-archive" id="gamesArchive"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ DRIVING ============================================================ -->
+  <section id="driving">
+    <div class="container" id="driving-root"></div>
+  </section>
+
+  <!-- ============================================================ CARS ============================================================ -->
+  <section id="cars">
+    <div class="container" id="cars-root"></div>
+  </section>
+
+  <!-- ============================================================ ENGINEERING ============================================================ -->
+  <section id="engineering">
+    <div class="container" id="engineering-root"></div>
+  </section>
+
+  <!-- ============================================================ RESUME ============================================================ -->
+  <section id="resume">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="mark"><span>On Paper</span></div>
+        <h2>Resume</h2>
+        <p class="lede">Everything above, condensed to one printable page.</p>
+      </div>
+      <div class="resume-panel reveal">
+        <div class="resume-head">
+          <div>
+            <h3>Rahil Shah</h3>
+            <p class="role">B.Tech Integrated (IT) Student</p>
+          </div>
+          <div>
+            <p style="color:var(--paper-dim);font-size:.92rem;">rahilsshah2@gmail.com<br>www.linkedin.com/in/rahilshah&#8209;profile<br>Mumbai, Maharashtra, India</p>
+          </div>
+        </div>
+        <div class="resume-cols">
+          <div class="resume-block">
+            <h4>Profile</h4>
+            <p>Curious IT student exploring AI. Experienced in running local LLMs with OpenWebUI and experimenting with context engineering and prompt engineering.</p>
+            <h4 style="margin-top:24px;">Education</h4>
+            <p>SVKM&rsquo;s NMIMS Mukesh Patel School of Technology Management &amp; Engineering &mdash; B.Tech Integrated, Information Technology (Jan 2022 &ndash; May 2028).</p>
+          </div>
+          <div class="resume-block">
+            <h4>Skills</h4>
+            <p>Prompt Engineering &middot; Context Engineering &middot; Local LLM Deployment</p>
+            <h4 style="margin-top:24px;">Certification</h4>
+            <p>Certificate of Completion &mdash; AI Fluency Framework &amp; Foundations.</p>
+            <h4 style="margin-top:24px;">Technical Work</h4>
+            <p>Raspberry Pi 5 &mdash; hardware/sensor build (in progress). Depression-aware AI chatbot architecture (concept stage).</p>
+          </div>
+        </div>
+        <div class="resume-actions">
+          <button class="btn btn-primary" id="printResumeBtn" type="button">Download / Print Resume</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ CONTACT ============================================================ -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-panel reveal">
+        <h2>Let&rsquo;s talk about AI, hardware, or the anime list.</h2>
+        <div class="contact-links">
+          <button class="contact-link" id="copyEmailBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            <span>
+              <span class="lbl">Email</span><br>
+              <span class="val">rahilsshah2@gmail.com</span>
+            </span>
+            <span class="copy-status" id="copyStatus" aria-live="polite"></span>
+          </button>
+          <a class="contact-link" href="https://www.linkedin.com/in/rahilshah-profile" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 11v5M8 8v.01M12 16v-3a2 2 0 0 1 4 0v3M12 13v3"/></svg>
+            <span>
+              <span class="lbl">LinkedIn</span><br>
+              <span class="val">/in/rahilshah-profile</span>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" style="margin-left:auto;width:15px;height:15px;color:var(--paper-faint);"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <span>&copy; <span id="year"></span> Rahil Shah.</span>
+    <span>Built as a personal digital identity, not a template.</span>
+  </div>
+</footer>
+
+<!-- ============================================================ COMMAND PALETTE ============================================================ -->
+<div class="palette-overlay" id="paletteOverlay">
+  <div class="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div class="palette-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="paletteInput" placeholder="Jump to a section&hellip;" autocomplete="off" spellcheck="false" aria-label="Search sections">
+      <kbd>Esc</kbd>
+    </div>
+    <ul class="palette-list" id="paletteList"></ul>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var pointerFine = window.matchMedia("(pointer: fine)").matches;
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- Mobile nav ---------- */
+  var navToggle = document.getElementById("navToggle");
+  var mainNav = document.getElementById("mainNav");
+  navToggle.addEventListener("click", function(){
+    var open = mainNav.classList.toggle("is-open");
+    navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  });
+  mainNav.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){
+      mainNav.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open menu");
+    });
+  });
+
+  /* ---------- Scroll progress bar ---------- */
+  var progressEl = document.getElementById("scrollProgress");
+  function updateProgress(){
+    var h = document.documentElement;
+    var scrolled = h.scrollTop;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (scrolled / max) * 100 : 0;
+    progressEl.style.width = pct + "%";
+  }
+  document.addEventListener("scroll", updateProgress, { passive: true });
+  updateProgress();
+
+  /* ---------- Index rail + active nav link ---------- */
+  var railSections = [
+    { id: "home", label: "Home" },
+    { id: "about", label: "About" },
+    { id: "education", label: "Education" },
+    { id: "skills", label: "Skills" },
+    { id: "work", label: "Work" },
+    { id: "anime", label: "Anime" },
+    { id: "manga", label: "Manga" },
+    { id: "technology", label: "Technology" },
+    { id: "games", label: "Games" },
+    { id: "driving", label: "Driving" },
+    { id: "cars", label: "Cars" },
+    { id: "engineering", label: "Engineering" },
+    { id: "resume", label: "Resume" },
+    { id: "contact", label: "Contact" }
+  ];
+  var railEl = document.getElementById("indexRail");
+  railSections.forEach(function(s){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.dataset.target = s.id;
+    btn.setAttribute("aria-label", "Go to " + s.label);
+    btn.innerHTML = '<span class="rail-label">' + s.label + '</span>';
+    btn.addEventListener("click", function(){
+      var el = document.getElementById(s.id);
+      if (el) el.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
+    });
+    railEl.appendChild(btn);
+  });
+  var railButtons = Array.prototype.slice.call(railEl.querySelectorAll("button"));
+  var navLinks = Array.prototype.slice.call(mainNav.querySelectorAll("a"));
+
+  if ("IntersectionObserver" in window){
+    var navObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (!entry.isIntersecting) return;
+        var id = entry.target.id;
+        railButtons.forEach(function(b){ b.classList.toggle("is-active", b.dataset.target === id); });
+        navLinks.forEach(function(a){ a.classList.toggle("is-active", a.getAttribute("href") === "#" + id); });
+      });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    railSections.forEach(function(s){
+      var el = document.getElementById(s.id);
+      if (el) navObserver.observe(el);
+    });
+  }
+
+  /* ---------- Reveal on scroll ----------
+     Choreography, not a mass fade-in. Every reveal inside a section is
+     given an index so its siblings arrive in sequence; without this the
+     whole section lands in one flat beat, which is what made these
+     sections feel a generation older than the React worlds.
+
+     The delay is capped so a long section never leaves the visitor
+     waiting on the last item. */
+  var REVEAL_SEL = ".reveal, .reveal-clip, .reveal-scale";
+
+  /* Schematic strokes draw in order rather than all at once. */
+  document.querySelectorAll(".work-schematic svg").forEach(function(svg){
+    svg.querySelectorAll("path, rect, circle").forEach(function(node, i){
+      node.classList.add("wf-draw");
+      node.style.setProperty("--sd", (i * 85) + "ms");
+    });
+  });
+
+  document.querySelectorAll("section, footer").forEach(function(section){
+    var items = section.querySelectorAll(REVEAL_SEL);
+    var i = 0;
+    items.forEach(function(el){
+      /* Anything already carrying an explicit --i (the skills nodes) keeps
+         its authored order. */
+      if (el.style.getPropertyValue("--i")) return;
+      el.style.setProperty("--rd", Math.min(i, 6) * 70 + "ms");
+      i++;
+    });
+  });
+
+  if ("IntersectionObserver" in window){
+    var revealObserver = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){ entry.target.classList.add("is-visible"); obs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -5% 0px" });
+    document.querySelectorAll(REVEAL_SEL).forEach(function(el){ revealObserver.observe(el); });
+  } else {
+    document.querySelectorAll(REVEAL_SEL).forEach(function(el){ el.classList.add("is-visible"); });
+  }
+
+  /* Schematic draw-on. Kept separate from the reveal class and deferred by
+     a frame: flipping an ancestor class during the same style resolution
+     that first renders the SVG leaves the stroke transition stuck at its
+     start value. */
+  (function(){
+    var schematics = document.querySelectorAll(".work-schematic svg");
+    function draw(svg){
+      window.requestAnimationFrame(function(){
+        window.requestAnimationFrame(function(){ svg.classList.add("is-drawn"); });
+      });
+    }
+    if (!("IntersectionObserver" in window)){
+      schematics.forEach(function(svg){ svg.classList.add("is-drawn"); });
+      return;
+    }
+    var obs = new IntersectionObserver(function(entries, o){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){ draw(entry.target); o.unobserve(entry.target); }
+      });
+    }, { threshold: 0.2 });
+    schematics.forEach(function(svg){ obs.observe(svg); });
+  })();
+
+  /* ---------- Education line draw ---------- */
+  var eduSection = document.getElementById("education");
+  if ("IntersectionObserver" in window){
+    var eduObserver = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){ eduSection.classList.add("is-drawn"); obs.disconnect(); }
+      });
+    }, { threshold: 0.3 });
+    eduObserver.observe(eduSection);
+  } else {
+    eduSection.classList.add("is-drawn");
+  }
+
+  /* ---------- Hero entrance + pointer spotlight ---------- */
+  var heroEl = document.querySelector(".hero");
+  window.requestAnimationFrame(function(){
+    window.requestAnimationFrame(function(){ heroEl.classList.add("is-ready"); });
+  });
+  var spot = document.getElementById("heroSpot");
+  if (pointerFine && !prefersReduced){
+    var ticking = false;
+    heroEl.addEventListener("mousemove", function(e){
+      var r = heroEl.getBoundingClientRect();
+      var x = ((e.clientX - r.left) / r.width) * 100;
+      var y = ((e.clientY - r.top) / r.height) * 100;
+      if (!ticking){
+        window.requestAnimationFrame(function(){
+          spot.style.setProperty("--mx", x + "%");
+          spot.style.setProperty("--my", y + "%");
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
+  /* ---------- Skill nodes: tap-to-toggle on touch ---------- */
+  document.querySelectorAll(".skill-node").forEach(function(node){
+    node.addEventListener("click", function(){
+      var wasActive = node.classList.contains("is-active");
+      document.querySelectorAll(".skill-node").forEach(function(n){ n.classList.remove("is-active"); });
+      if (!wasActive) node.classList.add("is-active");
+    });
+  });
+
+  /* ============================================================
+     ANIME + GAMES — single data model, single renderer, single
+     selection/transition state, single image-loading model.
+     Artwork loads from local files (assets/anime, assets/games);
+     a generated fallback covers anything missing or failed, so
+     nothing ever shows a broken-image icon.
+     ============================================================ */
+  var ACCENTS = {
+    vermilion: ["rgba(198,64,46,.55)", "rgba(198,64,46,.12)"],
+    amber:     ["rgba(185,118,46,.55)", "rgba(185,118,46,.12)"],
+    steel:     ["rgba(110,113,104,.55)", "rgba(110,113,104,.12)"],
+    crimson:   ["rgba(122,36,24,.65)", "rgba(122,36,24,.14)"]
+  };
+  function accentVars(key){
+    var c = ACCENTS[key] || ACCENTS.steel;
+    return "--card-a:" + c[0] + ";--card-b:" + c[1] + ";";
+  }
+  function applyAccent(el, key){
+    var c = ACCENTS[key] || ACCENTS.steel;
+    el.style.setProperty("--card-a", c[0]);
+    el.style.setProperty("--card-b", c[1]);
+  }
+  function rankOf(i){ return String(i + 1).padStart(2, "0"); }
+  function plain(s){ return s.replace(/&amp;/g, "&"); }
+
+  /* Loads src into img; on success/failure (guarded by an isStale
+     check so a slow, superseded request can never clobber a newer
+     selection) toggles .is-loaded and calls back. */
+  function loadArt(img, src, isStale, onSettled){
+    img.classList.remove("is-loaded");
+    img.onload = function(){ if (isStale()) return; img.classList.add("is-loaded"); if (onSettled) onSettled(true); };
+    img.onerror = function(){ if (isStale()) return; img.classList.remove("is-loaded"); if (onSettled) onSettled(false); };
+    img.src = src;
+  }
+  function preload(src){ var p = new Image(); p.src = src; }
+
+  var ANIME = [
+    { title: "One Piece", accent: "steel", img: "assets/anime/01-one-piece.jpg", about: "A long-running manga by Eiichiro Oda, adapted into an ongoing anime by Toei Animation since 1999." },
+    { title: "Dragon Ball Series", accent: "amber", img: "assets/anime/02-dragon-ball.jpg", about: "Originated as a manga by Akira Toriyama, with anime adaptations by Toei Animation beginning in 1986." },
+    { title: "Naruto &amp; Naruto Shippuden", accent: "amber", img: "assets/anime/03-naruto.jpg", about: "Manga by Masashi Kishimoto; anime adaptation by Studio Pierrot ran from 2002 to 2017 across both series." },
+    { title: "Bleach Complete Series", accent: "steel", img: "assets/anime/04-bleach.jpg", about: "Manga by Tite Kubo; anime by Studio Pierrot, with its original run from 2004 to 2012." },
+    { title: "Fullmetal Alchemist: Brotherhood", accent: "crimson", img: "assets/anime/05-fullmetal-alchemist-brotherhood.jpg", about: "Manga by Hiromu Arakawa; this adaptation was produced by Bones and aired from 2009 to 2010." },
+    { title: "Black Clover", accent: "crimson", img: "assets/anime/06-black-clover.jpg", about: "Manga by Y\u016bki Tabata; anime adaptation by Studio Pierrot aired from 2017 to 2021." },
+    { title: "Re:Zero", accent: "vermilion", img: "assets/anime/07-rezero.jpg", about: "Light novel series by Tappei Nagatsuki; anime adaptation by White Fox, airing since 2016." },
+    { title: "Kaguya-sama", accent: "steel", img: "assets/anime/08-kaguya-sama.jpg", about: "Manga by Aka Akasaka; anime adaptation by A-1 Pictures / CloverWorks aired from 2019 to 2022." },
+    { title: "Gintama", accent: "vermilion", img: "assets/anime/09-gintama.jpg", about: "Manga by Hideaki Sorachi; anime adaptation by Sunrise, airing across multiple runs since 2006." },
+    { title: "Initial D", accent: "amber", img: "assets/anime/10-initial-d.jpg", about: "Manga by Shuichi Shigeno; anime adaptations have aired across multiple stages since 1998." }
+  ];
+
+  var GAMES = [
+    { name: "The Witcher 3", genre: "Open-world action RPG", accent: "steel", img: "assets/games/01-witcher-3.jpg" },
+    { name: "GTA V", genre: "Open-world action-adventure", accent: "crimson", img: "assets/games/02-gta-v.jpg" },
+    { name: "Skyrim", genre: "Open-world action RPG", accent: "steel", img: "assets/games/03-skyrim.jpg" },
+    { name: "Ghost of Tsushima", genre: "Open-world samurai action-adventure", accent: "crimson", img: "assets/games/04-ghost-of-tsushima.jpg" },
+    { name: "Insomniac Spider-Man Series", genre: "Open-world superhero action-adventure", accent: "vermilion", img: "assets/games/05-spiderman.jpg" },
+    { name: "Dying Light", genre: "Survival action, first-person", accent: "amber", img: "assets/games/06-dying-light.jpg" }
+  ];
+
+  /* ---------- Anime: exhibition (index + stage + strip) ---------- */
+  var exhibitIndex = document.getElementById("exhibitIndex");
+  var exhibitStrip = document.getElementById("exhibitStrip");
+  var exhibitStage = document.getElementById("exhibitStage");
+  var stageImgEl = document.getElementById("stageImg");
+  var stageRankEl = document.getElementById("stageRank");
+  var stageGlyphEl = document.getElementById("stageGlyph");
+  var stageCountEl = document.getElementById("stageCount");
+  var stageTitleEl = document.getElementById("stageTitle");
+  var stageAboutEl = document.getElementById("stageAbout");
+  var stageAnnounce = document.getElementById("stageAnnounce");
+
+  var choiceButtons = [], chipButtons = [];
+  var currentIndex = 0, renderToken = 0;
+
+  function directionFor(target){
+    if (target > currentIndex) return "next";
+    if (target < currentIndex) return "prev";
+    return "jump";
+  }
+
+  var stageBgEl = document.getElementById("stageBg");
+  var stagePlateEl = document.getElementById("stagePlate");
+
+  function paintStage(i, token){
+    var item = ANIME[i];
+    applyAccent(exhibitStage, item.accent);
+    stageRankEl.textContent = "No. " + rankOf(i);
+    /* The fallback is a designed archival plate, so it carries the real
+       title rather than a rank glyph. Only visible when art is missing. */
+    stageGlyphEl.textContent = plain(item.title);
+    stageCountEl.textContent = "Rank " + rankOf(i) + " / 10";
+    stageTitleEl.innerHTML = item.title;
+    stageAboutEl.textContent = item.about;
+    stageAnnounce.textContent = plain(item.title) + ", rank " + rankOf(i) + " of 10.";
+
+    /* Two layers off one file: an uncropped print, and the same image
+       blurred behind it purely for colour. */
+    loadArt(stageImgEl, item.img, function(){ return token !== renderToken; }, function(ok){
+      if (token !== renderToken) return;
+      /* No artwork on file: hide the empty frame and let the archival
+         plate stand on its own. */
+      stagePlateEl.classList.toggle("is-unsourced", !ok);
+    });
+    loadArt(stageBgEl, item.img, function(){ return token !== renderToken; });
+
+    preload(ANIME[(i + 1) % ANIME.length].img);
+    preload(ANIME[(i - 1 + ANIME.length) % ANIME.length].img);
+  }
+
+  function select(target){
+    var next = (target + ANIME.length) % ANIME.length;
+    var dir = directionFor(next);
+    currentIndex = next; /* selection state is correct immediately, regardless of animation/image timing */
+    choiceButtons.forEach(function(b, idx){ b.setAttribute("aria-current", idx === next ? "true" : "false"); });
+    chipButtons.forEach(function(b, idx){ b.setAttribute("aria-current", idx === next ? "true" : "false"); });
+
+    var myToken = ++renderToken;
+    var outX = dir === "next" ? "-26px" : dir === "prev" ? "26px" : "0px";
+    var inX  = dir === "next" ? "26px"  : dir === "prev" ? "-26px" : "0px";
+    /* the artwork plane warps out/in on its own depth (scale + rotate + slide),
+       independent of the title/rank plane, which just slides on the outer layer */
+    var artOutX = dir === "next" ? "-40px" : dir === "prev" ? "40px" : "0px";
+    var artInX  = dir === "next" ? "40px"  : dir === "prev" ? "-40px" : "0px";
+    var artOutRotate = dir === "next" ? "-2.5deg" : dir === "prev" ? "2.5deg" : "0deg";
+    var artInRotate  = dir === "next" ? "2.5deg"  : dir === "prev" ? "-2.5deg" : "0deg";
+
+    exhibitStage.style.setProperty("--slideX", outX);
+    exhibitStage.style.setProperty("--stageOpacity", dir === "jump" ? ".5" : "0");
+    exhibitStage.style.setProperty("--artSlideX", artOutX);
+    exhibitStage.style.setProperty("--artScale", dir === "jump" ? "1" : ".93");
+    exhibitStage.style.setProperty("--artRotate", artOutRotate);
+    exhibitStage.style.setProperty("--artOpacity", dir === "jump" ? ".6" : "0");
+
+    window.setTimeout(function(){
+      if (myToken !== renderToken) return; /* superseded by a newer selection: drop this stale transition */
+      paintStage(next, myToken);
+      exhibitStage.classList.add("no-transition");
+      exhibitStage.style.setProperty("--slideX", inX);
+      exhibitStage.style.setProperty("--artSlideX", artInX);
+      exhibitStage.style.setProperty("--artScale", "1.05");
+      exhibitStage.style.setProperty("--artRotate", artInRotate);
+      exhibitStage.style.setProperty("--artOpacity", "0");
+      void exhibitStage.offsetWidth; /* force reflow so the next change transitions */
+      exhibitStage.classList.remove("no-transition");
+      window.requestAnimationFrame(function(){
+        if (myToken !== renderToken) return;
+        exhibitStage.style.setProperty("--slideX", "0px");
+        exhibitStage.style.setProperty("--stageOpacity", "1");
+        exhibitStage.style.setProperty("--artSlideX", "0px");
+        exhibitStage.style.setProperty("--artScale", "1");
+        exhibitStage.style.setProperty("--artRotate", "0deg");
+        exhibitStage.style.setProperty("--artOpacity", "1");
+      });
+    }, prefersReduced ? 0 : 140);
+  }
+
+  ANIME.forEach(function(item, i){
+    var li = document.createElement("li");
+    var btn = document.createElement("button");
+    btn.type = "button"; btn.className = "exhibit-choice";
+    btn.setAttribute("aria-current", i === 0 ? "true" : "false");
+    var thumb = document.createElement("span"); thumb.className = "rank-thumb";
+    var thumbImg = document.createElement("img"); thumbImg.alt = ""; thumbImg.loading = "lazy"; thumbImg.decoding = "async";
+    loadArt(thumbImg, item.img, function(){ return false; });
+    thumb.appendChild(thumbImg);
+    btn.innerHTML = '<span class="n">' + rankOf(i) + '</span><span class="t">' + item.title + '</span>';
+    btn.appendChild(thumb);
+    btn.addEventListener("click", function(){ select(i); exhibitStage.focus({ preventScroll: true }); });
+    li.appendChild(btn); exhibitIndex.appendChild(li); choiceButtons.push(btn);
+
+    var chip = document.createElement("button");
+    chip.type = "button"; chip.className = "exhibit-chip"; chip.tabIndex = -1;
+    chip.style.cssText = accentVars(item.accent);
+    chip.setAttribute("aria-current", i === 0 ? "true" : "false");
+    var chipImg = document.createElement("img"); chipImg.alt = ""; chipImg.loading = "lazy"; chipImg.decoding = "async";
+    loadArt(chipImg, item.img, function(){ return false; });
+    var chipN = document.createElement("span"); chipN.className = "chip-n"; chipN.textContent = rankOf(i);
+    chip.append(chipImg, chipN);
+    chip.addEventListener("click", function(){ select(i); });
+    exhibitStrip.appendChild(chip); chipButtons.push(chip);
+  });
+
+  document.getElementById("stagePrev").addEventListener("click", function(){ select(currentIndex - 1); });
+  document.getElementById("stageNext").addEventListener("click", function(){ select(currentIndex + 1); });
+  exhibitStage.addEventListener("keydown", function(e){
+    if (e.key === "ArrowLeft"){ e.preventDefault(); select(currentIndex - 1); }
+    else if (e.key === "ArrowRight"){ e.preventDefault(); select(currentIndex + 1); }
+    else if (e.key === "Home"){ e.preventDefault(); select(0); }
+    else if (e.key === "End"){ e.preventDefault(); select(ANIME.length - 1); }
+  });
+
+  if (pointerFine && !prefersReduced){
+    exhibitStage.addEventListener("pointermove", function(e){
+      var r = exhibitStage.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5;
+      var py = (e.clientY - r.top) / r.height - 0.5;
+      exhibitStage.style.setProperty("--tiltX", (py * -8) + "deg");
+      exhibitStage.style.setProperty("--tiltY", (px * 10) + "deg");
+      exhibitStage.style.setProperty("--px", px);
+      exhibitStage.style.setProperty("--py", py);
+      exhibitStage.style.setProperty("--glare-x", ((px + 0.5) * 100) + "%");
+      exhibitStage.style.setProperty("--glare-y", ((py + 0.5) * 100) + "%");
+    });
+    exhibitStage.addEventListener("pointerleave", function(){
+      exhibitStage.style.setProperty("--tiltX", "0deg");
+      exhibitStage.style.setProperty("--tiltY", "0deg");
+      exhibitStage.style.setProperty("--px", 0);
+      exhibitStage.style.setProperty("--py", 0);
+    });
+  }
+
+  /* Gentle scroll drift on the whole exhibit — distinct from the pointer tilt on the stage itself */
+  if (!prefersReduced){
+    var exhibitEl = document.querySelector(".exhibit");
+    var driftTicking = false;
+    function drawDrift(){
+      if (!exhibitEl) return;
+      var r = exhibitEl.getBoundingClientRect();
+      var center = r.top + r.height / 2;
+      var delta = (window.innerHeight / 2 - center) / Math.max(r.height, 1);
+      exhibitEl.style.setProperty("--exhibit-scroll", Math.max(-14, Math.min(14, delta * 30)) + "px");
+      driftTicking = false;
+    }
+    drawDrift();
+    window.addEventListener("scroll", function(){ if (!driftTicking){ driftTicking = true; window.requestAnimationFrame(drawDrift); } }, { passive: true });
+  }
+
+  paintStage(0, renderToken);
+
+  /* ---------- Games: rows with a real cover thumbnail + a detail drawer, distinct from Anime ---------- */
+  var gamesArchive = document.getElementById("gamesArchive");
+  var gameDrawer = document.createElement("aside");
+  gameDrawer.className = "game-drawer";
+  gameDrawer.setAttribute("role", "dialog");
+  gameDrawer.setAttribute("aria-modal", "true");
+  gameDrawer.setAttribute("aria-hidden", "true");
+  gameDrawer.id = "gameDrawer";
+  document.body.appendChild(gameDrawer);
+  var lastGameFocus = null;
+
+  /* Focus trap. The drawer previously restored focus on close but never
+     moved focus in, carried no dialog role, and left the entire page
+     behind it reachable by Tab. */
+  var FOCUSABLE_SEL = "a[href],button:not([disabled]),input:not([disabled])," +
+    "select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex='-1'])";
+  var drawerKeyHandler = null;
+
+  function drawerFocusables(){
+    return Array.prototype.slice.call(gameDrawer.querySelectorAll(FOCUSABLE_SEL));
+  }
+
+  function closeGameDrawer(){
+    if (!gameDrawer.classList.contains("is-open")) return;
+    gameDrawer.classList.remove("is-open");
+    gameDrawer.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    if (drawerKeyHandler){
+      document.removeEventListener("keydown", drawerKeyHandler, true);
+      drawerKeyHandler = null;
+    }
+    if (lastGameFocus && lastGameFocus.focus) lastGameFocus.focus();
+  }
+
+  function trapDrawerFocus(){
+    drawerKeyHandler = function(e){
+      if (e.key === "Escape"){ e.stopPropagation(); closeGameDrawer(); return; }
+      if (e.key !== "Tab") return;
+      var items = drawerFocusables();
+      if (!items.length){ e.preventDefault(); return; }
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first){
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last){
+        e.preventDefault(); first.focus();
+      } else if (!gameDrawer.contains(document.activeElement)){
+        e.preventDefault(); first.focus();
+      }
+    };
+    document.addEventListener("keydown", drawerKeyHandler, true);
+  }
+  function openGameDrawer(item, triggerEl){
+    lastGameFocus = triggerEl || document.activeElement;
+    gameDrawer.innerHTML = "";
+    var close = document.createElement("button");
+    close.type = "button"; close.className = "drawer-close"; close.setAttribute("aria-label", "Close game detail");
+    close.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    close.addEventListener("click", closeGameDrawer);
+    var art = document.createElement("div"); art.className = "game-drawer-art"; art.style.cssText = accentVars(item.accent);
+    /* Blurred layer for colour, then the cover itself shown whole. */
+    var artBlur = document.createElement("img"); artBlur.className = "g-blur"; artBlur.alt = ""; artBlur.setAttribute("aria-hidden", "true");
+    loadArt(artBlur, item.img, function(){ return false; });
+    var artImg = document.createElement("img"); artImg.className = "g-cover"; artImg.alt = "";
+    loadArt(artImg, item.img, function(){ return false; });
+    var glyph = document.createElement("span"); glyph.className = "g-glyph"; glyph.textContent = item.name.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase();
+    art.append(artBlur, artImg, glyph);
+    var copy = document.createElement("div"); copy.className = "game-drawer-copy";
+    copy.innerHTML = "<div class=\"kicker\">Games \u00b7 personal list</div><h3></h3><p></p>";
+    copy.querySelector("h3").textContent = item.name;
+    copy.querySelector("p").textContent = item.genre;
+    copy.querySelector("h3").id = "gameDrawerTitle";
+    gameDrawer.setAttribute("aria-labelledby", "gameDrawerTitle");
+    gameDrawer.append(close, art, copy);
+    gameDrawer.removeAttribute("aria-hidden");
+    gameDrawer.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+    close.focus();
+    trapDrawerFocus();
+  }
+  gameDrawer.addEventListener("click", function(e){ if (e.target === gameDrawer) closeGameDrawer(); });
+
+  GAMES.forEach(function(item, i){
+    var row = document.createElement("button");
+    row.type = "button"; row.className = "game-row-cinematic reveal";
+    row.setAttribute("aria-label", "Open detail for " + item.name);
+    var backdrop = document.createElement("span"); backdrop.className = "game-row-backdrop"; backdrop.setAttribute("aria-hidden", "true");
+    var backdropImg = document.createElement("img"); backdropImg.alt = ""; backdropImg.loading = "lazy"; backdropImg.decoding = "async";
+    loadArt(backdropImg, item.img, function(){ return false; });
+    backdrop.appendChild(backdropImg);
+    var sliver = document.createElement("span"); sliver.className = "game-art-sliver"; sliver.style.cssText = accentVars(item.accent);
+    var sliverImg = document.createElement("img"); sliverImg.alt = ""; sliverImg.loading = "lazy"; sliverImg.decoding = "async";
+    loadArt(sliverImg, item.img, function(){ return false; });
+    var mono = document.createElement("span"); mono.className = "g-mono"; mono.textContent = item.name.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase();
+    sliver.append(mono, sliverImg);
+    var textWrap = document.createElement("span");
+    textWrap.innerHTML = '<span class="g-name">' + item.name + '</span><span class="g-genre">' + item.genre + '</span>';
+    var no = document.createElement("span"); no.className = "g-no"; no.textContent = rankOf(i);
+    row.append(backdrop, no, textWrap, sliver);
+    var arrow = document.createElement("span"); arrow.className = "g-arrow";
+    arrow.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>';
+    row.appendChild(arrow);
+    row.addEventListener("click", function(){ openGameDrawer(item, row); });
+    gamesArchive.appendChild(row);
+  });
+
+  if ("IntersectionObserver" in window){
+    var lateObserver = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){ entry.target.classList.add("is-visible"); obs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".games-archive .reveal").forEach(function(el){ lateObserver.observe(el); });
+  } else {
+    document.querySelectorAll(".games-archive .reveal").forEach(function(el){ el.classList.add("is-visible"); });
+  }
+
+  /* ---------- Hero: subtle whole-scene parallax on pointer (adds to the spotlight above) ---------- */
+  (function(){
+    var hero = document.querySelector(".hero");
+    if (!hero || !pointerFine || prefersReduced) return;
+    var heroTicking = false;
+    hero.addEventListener("pointermove", function(e){
+      if (heroTicking) return; heroTicking = true;
+      window.requestAnimationFrame(function(){
+        var r = hero.getBoundingClientRect();
+        hero.style.setProperty("--hero-x", (((e.clientX - r.left) / r.width) - 0.5) * 9);
+        hero.style.setProperty("--hero-y", (((e.clientY - r.top) / r.height) - 0.5) * 7);
+        heroTicking = false;
+      });
+    });
+    hero.addEventListener("pointerleave", function(){ hero.style.setProperty("--hero-x", 0); hero.style.setProperty("--hero-y", 0); });
+  })();
+
+  /* ---------- Hero scroll handoff: the hero eases back/down as it leaves, instead of a flat cut ---------- */
+  (function(){
+    var hero = document.querySelector(".hero");
+    if (!hero || prefersReduced) return;
+    var heroInner = hero.querySelector(".container");
+    var scrollTicking = false;
+    var heroTitle = hero.querySelector("h1");
+    function drawHeroScroll(){
+      var progress = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / Math.max(hero.offsetHeight, 1)));
+      /* Compression, not just a fade: the display type tightens its
+         tracking and settles back, so leaving the hero reads as the same
+         composition condensing into the editorial page beneath it. */
+      var eased = progress * progress;
+      heroInner.style.setProperty("--hero-scroll-scale", (1 - eased * 0.08).toFixed(3));
+      heroInner.style.setProperty("--hero-scroll-y", (eased * 40).toFixed(1) + "px");
+      heroInner.style.setProperty("--hero-scroll-fade", (1 - progress * 0.92).toFixed(2));
+      if (heroTitle){
+        heroTitle.style.setProperty("--hero-track", (-0.01 - eased * 0.035).toFixed(4) + "em");
+        heroTitle.style.setProperty("--hero-shift", (eased * -18).toFixed(1) + "px");
+      }
+      /* The handoff rule: draws across as the hero clears, and is the
+         same line About opens against. */
+      hero.style.setProperty("--hero-handoff", Math.min(1, progress * 1.35).toFixed(3));
+      scrollTicking = false;
+    }
+    drawHeroScroll();
+    window.addEventListener("scroll", function(){ if (!scrollTicking){ scrollTicking = true; window.requestAnimationFrame(drawHeroScroll); } }, { passive: true });
+  })();
+
+  /* ---------- Hide the scroll cue once the visitor has scrolled ---------- */
+  window.addEventListener("scroll", function(){
+    if (window.scrollY > 48) document.body.classList.add("has-scrolled");
+  }, { passive: true });
+
+  /* ---------- Custom pointer: a state machine, mouse-only ----------
+     Sections declare intent with data-cursor="view|open|drag|3d|car|
+     tech|manga|image|close|link". The cursor reads the nearest ancestor
+     carrying one, so a world can change the pointer's meaning without
+     knowing anything about the cursor implementation. */
+  (function(){
+    if (!pointerFine || prefersReduced) return;
+
+    var cursorEl = document.createElement("div");
+    cursorEl.className = "motion-cursor";
+    cursorEl.setAttribute("aria-hidden", "true");
+    cursorEl.dataset.state = "default";
+    cursorEl.innerHTML =
+      '<span class="motion-cursor-ring"></span>' +
+      '<span class="motion-cursor-cross"></span>' +
+      '<span class="motion-cursor-label"></span>';
+    document.body.appendChild(cursorEl);
+
+    var labelEl = cursorEl.querySelector(".motion-cursor-label");
+    var cx = 0, cy = 0, cursorRaf = 0, state = "default";
+
+    /* Labels are part of the state definition, not per-call strings, so
+       the same interaction always reads the same way. */
+    var LABELS = {
+      view: "VIEW →",
+      open: "OPEN",
+      close: "×",
+      drag: "DRAG",
+      car: "ORBIT",
+      manga: "READ",
+      image: "VIEW →"
+    };
+
+    function place(){
+      cursorRaf = 0;
+      cursorEl.style.transform =
+        "translate3d(" + cx + "px," + cy + "px,0) translate3d(-50%,-50%,0)";
+      cursorEl.classList.add("is-active");
+    }
+
+    function setState(next){
+      if (next === state) return;
+      state = next;
+      cursorEl.dataset.state = next;
+      var label = LABELS[next];
+      if (label){
+        labelEl.textContent = label;
+        cursorEl.setAttribute("data-label", "");
+      } else {
+        labelEl.textContent = "";
+        cursorEl.removeAttribute("data-label");
+      }
+    }
+
+    /* Resolve the state for whatever is under the pointer. An explicit
+       data-cursor wins; otherwise anything clickable reads as a link. */
+    function resolve(target){
+      if (!(target instanceof Element)) return "default";
+      var declared = target.closest("[data-cursor]");
+      if (declared) return declared.getAttribute("data-cursor") || "default";
+      if (target.closest("a[href], button, [role='tab'], input, summary")) return "link";
+      return "default";
+    }
+
+    document.addEventListener("pointermove", function(e){
+      cx = e.clientX; cy = e.clientY;
+      if (!cursorRaf) cursorRaf = window.requestAnimationFrame(place);
+      setState(resolve(e.target));
+    }, { passive: true });
+
+    document.addEventListener("pointerout", function(e){
+      if (!e.relatedTarget) cursorEl.classList.remove("is-active");
+    });
+    /* Pressing gives the pointer a little physical feedback. */
+    document.addEventListener("pointerdown", function(){
+      cursorEl.style.setProperty("--press", "1");
+      cursorEl.classList.add("is-press");
+    }, { passive: true });
+    document.addEventListener("pointerup", function(){
+      cursorEl.classList.remove("is-press");
+    }, { passive: true });
+  })();
+
+  /* ---------- Copy email ---------- */
+  var copyBtn = document.getElementById("copyEmailBtn");
+  var copyStatus = document.getElementById("copyStatus");
+  copyBtn.addEventListener("click", function(){
+    var email = "rahilsshah2@gmail.com";
+    function done(ok){
+      copyStatus.textContent = ok ? "Copied" : "Copy failed \u2014 email above";
+      window.setTimeout(function(){ copyStatus.textContent = ""; }, 2200);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(email).then(function(){ done(true); }, function(){ done(false); });
+    } else {
+      done(false);
+    }
+  });
+
+  /* ---------- Print resume ---------- */
+  document.getElementById("printResumeBtn").addEventListener("click", function(){ window.print(); });
+
+  /* ---------- Section seams: one world's language becoming the next ----
+     Each seam is a band between two sections. The top edge is drawn in
+     the outgoing section's visual language, the bottom edge in the
+     incoming one, and connecting curves are drawn between them as the
+     band scrolls into view — so the boundary reads as a transformation
+     rather than a cut.
+
+     The geometry is generated rather than hand-authored so all eight
+     seams share one implementation and stay consistent. Every stroke
+     uses pathLength="1", which normalises the draw-on animation to a
+     single CSS rule regardless of the real path length. */
+  (function(){
+    var SEAMS = [
+      { before: "about",       from: "display",  to: "rules",    label: "HERO · EDITORIAL" },
+      { before: "education",   from: "rules",    to: "timeline", label: "RULE · TIMELINE" },
+      { before: "skills",      from: "timeline", to: "nodes",    label: "NODE · SYSTEM" },
+      { before: "work",        from: "nodes",    to: "schematic",label: "SYSTEM · SCHEMATIC" },
+      { before: "anime",       from: "schematic",to: "frames",   label: "SCHEMATIC · FRAME" },
+      { before: "manga",       from: "frames",   to: "spines",   label: "INK · PANEL EDGE" },
+      { before: "technology",  from: "spines",   to: "nodes",    label: "PAGE · DATA PATH" },
+      { before: "games",       from: "nodes",    to: "indexline",label: "TRACE · ARCHIVE" },
+      { before: "driving",     from: "indexline",to: "lanes",    label: "ARCHIVE · ROAD" },
+      { before: "cars",        from: "lanes",    to: "floor",    label: "ROAD · SHOWROOM FLOOR" },
+      { before: "engineering", from: "floor",    to: "grid",     label: "CONTOUR · DRAWING" },
+      { before: "resume",      from: "grid",     to: "rules",    label: "BLUEPRINT · DOCUMENT" },
+      { before: "contact",     from: "rules",    to: "dispatch", label: "DOCUMENT · DISPATCH" }
+    ];
+
+    var W = 100, H = 40;
+
+    /* Each generator returns anchor x-positions plus the marks drawn at
+       that edge. y is 0 for the top edge, H for the bottom. */
+    function edge(kind, y){
+      var marks = [], anchors = [], i, x;
+      switch (kind){
+        case "display":       // hero: a few heavy display strokes
+          for (i = 0; i < 3; i++){
+            x = 18 + i * 32;
+            marks.push("M" + (x - 9) + " " + y + " H" + (x + 9));
+            anchors.push(x);
+          }
+          break;
+        case "rules":         // editorial / document rules
+          for (i = 0; i < 4; i++){
+            x = 12.5 + i * 25;
+            marks.push("M" + (x - 10) + " " + y + " H" + (x + 10));
+            anchors.push(x);
+          }
+          break;
+        case "timeline":      // a spine with nodes on it
+          marks.push("M6 " + y + " H94");
+          for (i = 0; i < 4; i++){ anchors.push(14 + i * 24); }
+          break;
+        case "nodes":         // system diagram nodes
+          for (i = 0; i < 5; i++){
+            x = 10 + i * 20;
+            marks.push("M" + (x - 1.6) + " " + y + " a1.6 1.6 0 1 0 3.2 0 a1.6 1.6 0 1 0 -3.2 0");
+            anchors.push(x);
+          }
+          break;
+        case "schematic":     // technical schematic: stepped traces
+          for (i = 0; i < 4; i++){
+            x = 14 + i * 24;
+            marks.push("M" + (x - 8) + " " + y + " h5 v" + (y === 0 ? 3 : -3) + " h6");
+            anchors.push(x);
+          }
+          break;
+        case "frames":        // exhibition framing
+          for (i = 0; i < 3; i++){
+            x = 20 + i * 30;
+            marks.push("M" + (x - 11) + " " + y + " H" + (x + 11));
+            marks.push("M" + (x - 11) + " " + y + " v" + (y === 0 ? 4 : -4));
+            marks.push("M" + (x + 11) + " " + y + " v" + (y === 0 ? 4 : -4));
+            anchors.push(x);
+          }
+          break;
+        case "spines":        // book spines on a shelf
+          for (i = 0; i < 16; i++){
+            x = 6 + i * 5.9;
+            marks.push("M" + x + " " + y + " v" + (y === 0 ? 5 : -5));
+            if (i % 4 === 0) anchors.push(x);
+          }
+          marks.push("M4 " + y + " H96");
+          break;
+        case "indexline":     // a single archive index rule
+          marks.push("M6 " + y + " H94");
+          for (i = 0; i < 6; i++){
+            x = 10 + i * 16;
+            marks.push("M" + x + " " + y + " v" + (y === 0 ? 2.5 : -2.5));
+            if (i % 2 === 0) anchors.push(x);
+          }
+          break;
+        case "lanes":         // road lane markings, converging
+          for (i = 0; i < 5; i++){
+            x = 30 + i * 10;
+            marks.push("M" + x + " " + y + " v" + (y === 0 ? 4 : -4));
+            anchors.push(x);
+          }
+          break;
+        case "floor":         // showroom floor: perspective grid
+          marks.push("M4 " + y + " H96");
+          for (i = 0; i < 7; i++){
+            x = 10 + i * 13.3;
+            anchors.push(x);
+          }
+          break;
+        case "grid":          // blueprint grid
+          for (i = 0; i < 9; i++){
+            x = 6 + i * 11;
+            marks.push("M" + x + " " + y + " v" + (y === 0 ? 4 : -4));
+            if (i % 2 === 0) anchors.push(x);
+          }
+          marks.push("M4 " + y + " H96");
+          break;
+        case "dispatch":      // terminal / transmission
+          for (i = 0; i < 3; i++){
+            x = 22 + i * 28;
+            marks.push("M" + (x - 6) + " " + y + " h12");
+            marks.push("M" + (x + 6) + " " + y + " l-3 " + (y === 0 ? 3 : -3));
+            marks.push("M" + (x + 6) + " " + y + " l-3 " + (y === 0 ? -3 : 3));
+            anchors.push(x);
+          }
+          break;
+      }
+      return { marks: marks, anchors: anchors };
+    }
+
+    /* Connect the two edges. Anchors rarely match in count, so each
+       outgoing anchor reaches for its proportional partner — which is
+       exactly the "one language becoming another" reading. */
+    function connect(top, bottom){
+      var out = [], n = Math.max(top.length, bottom.length);
+      for (var i = 0; i < n; i++){
+        var a = top[Math.min(i, top.length - 1)];
+        var b = bottom[Math.min(Math.round(i * (bottom.length - 1) / Math.max(1, n - 1)), bottom.length - 1)];
+        if (a === undefined || b === undefined) continue;
+        out.push(
+          "M" + a + " 5 C" + a + " " + (H * 0.45) + ", " + b + " " + (H * 0.55) + ", " + b + " " + (H - 5)
+        );
+      }
+      return out;
+    }
+
+    /* The Driving -> Cars boundary is the one hero transition on the page,
+       so it gets a purpose-built seam instead of the generated one: the
+       road's converging lanes flatten out into the showroom floor as you
+       scroll through it. Scroll progress drives a single custom property;
+       everything else is CSS. */
+    function buildRoadSeam(host){
+      var seam = document.createElement("div");
+      seam.className = "seam seam-road";
+      seam.setAttribute("aria-hidden", "true");
+      var lanes = "";
+      for (var i = 0; i < 9; i++){
+        lanes += '<span class="rs-lane" style="--l:' + i + '"></span>';
+      }
+      var floor = "";
+      for (var j = 0; j < 6; j++){
+        floor += '<span class="rs-floor" style="--f:' + j + '"></span>';
+      }
+      seam.innerHTML =
+        '<div class="rs-stage">' + lanes + floor + '</div>' +
+        '<span class="seam-label">ROAD · SHOWROOM FLOOR</span>';
+      host.parentNode.insertBefore(seam, host);
+
+      var ticking = false;
+      function measure(){
+        ticking = false;
+        var r = seam.getBoundingClientRect();
+        /* 0 while the seam is still below the fold, 1 once it has passed
+           the middle of the viewport. */
+        var p = 1 - (r.top + r.height) / (window.innerHeight + r.height);
+        seam.style.setProperty("--rs", Math.min(1, Math.max(0, p)).toFixed(3));
+      }
+      window.addEventListener("scroll", function(){
+        if (!ticking){ ticking = true; window.requestAnimationFrame(measure); }
+      }, { passive: true });
+      window.addEventListener("resize", measure, { passive: true });
+      measure();
+      return seam;
+    }
+
+    function buildSeam(spec){
+      var host = document.getElementById(spec.before);
+      if (!host) return null;
+      if (spec.before === "cars") return buildRoadSeam(host);
+
+      var seam = document.createElement("div");
+      seam.className = "seam";
+      seam.setAttribute("aria-hidden", "true");
+
+      var top = edge(spec.from, 0);
+      var bottom = edge(spec.to, H);
+      var links = connect(top.anchors, bottom.anchors);
+
+      var paths = "";
+      var order = 0;
+      top.marks.forEach(function(d){
+        paths += '<path class="seam-mark seam-from" d="' + d + '" pathLength="1" style="--i:' + (order++) + '"/>';
+      });
+      links.forEach(function(d){
+        paths += '<path class="seam-link" d="' + d + '" pathLength="1" style="--i:' + (order++) + '"/>';
+      });
+      bottom.marks.forEach(function(d){
+        paths += '<path class="seam-mark seam-to" d="' + d + '" pathLength="1" style="--i:' + (order++) + '"/>';
+      });
+
+      seam.innerHTML =
+        '<svg class="seam-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
+        paths + "</svg>" +
+        '<span class="seam-label">' + spec.label + "</span>";
+
+      host.parentNode.insertBefore(seam, host);
+      return seam;
+    }
+
+    var built = [];
+    SEAMS.forEach(function(spec){
+      var el = buildSeam(spec);
+      if (el) built.push(el);
+    });
+
+    /* Reuse the page's existing reveal observer semantics rather than
+       introducing a second scroll system. */
+    if ("IntersectionObserver" in window){
+      var seamObserver = new IntersectionObserver(function(entries, obs){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting){
+            entry.target.classList.add("is-in");
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.35 });
+      built.forEach(function(el){ seamObserver.observe(el); });
+    } else {
+      built.forEach(function(el){ el.classList.add("is-in"); });
+    }
+  })();
+
+  /* ---------- Command palette ---------- */
+  var paletteOverlay = document.getElementById("paletteOverlay");
+  var paletteTrigger = document.getElementById("paletteTrigger");
+  var paletteInput = document.getElementById("paletteInput");
+  var paletteListEl = document.getElementById("paletteList");
+  var paletteLastFocus = null;
+  var activeIndex = -1;
+
+  /* Motion preference. The OS setting is the default; this override is
+     stored so a visitor's choice survives a reload, and it is read by
+     both the CSS (html[data-motion]) and the React worlds. */
+  var MOTION_KEY = "rs-motion";
+  function currentMotion(){
+    return document.documentElement.dataset.motion ||
+      (prefersReduced ? "reduced" : "full");
+  }
+  function setMotion(mode){
+    document.documentElement.dataset.motion = mode;
+    try { window.localStorage.setItem(MOTION_KEY, mode); } catch (err) {}
+  }
+  try {
+    var storedMotion = window.localStorage.getItem(MOTION_KEY);
+    if (storedMotion === "reduced" || storedMotion === "full"){
+      document.documentElement.dataset.motion = storedMotion;
+    }
+  } catch (err) {}
+
+  function toast(message){
+    var el = document.getElementById("paletteToast");
+    if (!el){
+      el = document.createElement("div");
+      el.id = "paletteToast";
+      el.className = "palette-toast";
+      el.setAttribute("role", "status");
+      el.setAttribute("aria-live", "polite");
+      document.body.appendChild(el);
+    }
+    el.textContent = message;
+    el.classList.add("is-on");
+    window.clearTimeout(el._t);
+    el._t = window.setTimeout(function(){ el.classList.remove("is-on"); }, 2200);
+  }
+
+  /* Sections first, then the worlds, then actions — the order a visitor
+     scans, rather than alphabetical. */
+  var commands = [
+    { label: "Go Home", group: "GO", target: "#home" },
+    { label: "About", group: "GO", target: "#about" },
+    { label: "Education", group: "GO", target: "#education" },
+    { label: "Skills", group: "GO", target: "#skills" },
+    { label: "Certification", group: "GO", target: "#certification" },
+    { label: "Technical Work", group: "GO", target: "#work" },
+    { label: "Beyond the Resume", group: "GO", target: "#beyond" },
+    { label: "Resume", group: "GO", target: "#resume" },
+    { label: "Contact", group: "GO", target: "#contact" },
+
+    { label: "Open Anime", group: "WORLDS", target: "#anime" },
+    { label: "Open Manga", group: "WORLDS", target: "#manga" },
+    { label: "Open Technology", group: "WORLDS", target: "#technology" },
+    { label: "Open Gaming", group: "WORLDS", target: "#games" },
+    { label: "Open Driving", group: "WORLDS", target: "#driving" },
+    { label: "Open Garage", group: "WORLDS", target: "#cars" },
+    { label: "Open Engineering", group: "WORLDS", target: "#engineering" },
+
+    {
+      label: "Toggle Motion",
+      group: "ACTIONS",
+      hint: function(){ return currentMotion() === "reduced" ? "REDUCED" : "FULL"; },
+      run: function(){
+        var next = currentMotion() === "reduced" ? "full" : "reduced";
+        setMotion(next);
+        toast(next === "reduced" ? "Motion reduced" : "Motion enabled");
+      }
+    },
+    {
+      label: "Print Resume",
+      group: "ACTIONS",
+      run: function(){ window.print(); }
+    },
+    {
+      label: "Copy Email",
+      group: "ACTIONS",
+      run: function(){
+        var mail = document.querySelector("a[href^='mailto:']");
+        var address = mail ? mail.getAttribute("href").replace("mailto:", "") : "";
+        if (!address) { toast("No address found"); return; }
+        if (navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(address).then(
+            function(){ toast("Email copied"); },
+            function(){ toast(address); }
+          );
+        } else {
+          toast(address);
+        }
+      }
+    },
+    {
+      label: "Reset View",
+      group: "ACTIONS",
+      run: function(){
+        window.scrollTo({ top: 0, behavior: currentMotion() === "reduced" ? "auto" : "smooth" });
+      }
+    }
+  ];
+
+  function renderPalette(filter){
+    var q = (filter || "").trim().toLowerCase();
+    var filtered = commands.filter(function(c){ return c.label.toLowerCase().indexOf(q) !== -1; });
+    paletteListEl.innerHTML = "";
+    activeIndex = filtered.length ? 0 : -1;
+    if (!filtered.length){
+      var empty = document.createElement("li");
+      empty.className = "palette-empty";
+      empty.textContent = "No matching sections\u2026";
+      paletteListEl.appendChild(empty);
+      return;
+    }
+    var lastGroup = null;
+    filtered.forEach(function(c, idx){
+      /* Group headers only appear when the list is unfiltered enough to
+         still have groups; while searching they would just be noise. */
+      if (c.group && c.group !== lastGroup){
+        lastGroup = c.group;
+        var head = document.createElement("li");
+        head.className = "palette-group";
+        head.setAttribute("aria-hidden", "true");
+        head.textContent = c.group;
+        paletteListEl.appendChild(head);
+      }
+      var li = document.createElement("li");
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = idx === 0 ? "is-active" : "";
+
+      var name = document.createElement("span");
+      name.textContent = c.label;
+      btn.appendChild(name);
+
+      if (c.hint){
+        var hint = document.createElement("span");
+        hint.className = "palette-hint";
+        hint.textContent = typeof c.hint === "function" ? c.hint() : c.hint;
+        btn.appendChild(hint);
+      }
+
+      var chevron = document.createElement("span");
+      chevron.className = "palette-chevron";
+      chevron.innerHTML = "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.75' aria-hidden='true'><path d='M9 6l6 6-6 6'/></svg>";
+      btn.appendChild(chevron);
+
+      btn.addEventListener("click", function(){ runCommand(c); });
+      li.appendChild(btn);
+      paletteListEl.appendChild(li);
+    });
+  }
+
+  function runCommand(c){
+    if (c.run){
+      /* Close first so focus returns to the trigger before the action
+         runs — print in particular must not fire with focus trapped. */
+      closePalette();
+      c.run();
+      return;
+    }
+    goTo(c.target);
+  }
+
+  function goTo(target){
+    closePalette();
+    var el = document.querySelector(target);
+    if (el) el.scrollIntoView({ behavior: currentMotion() === "reduced" ? "auto" : "smooth", block: "start" });
+  }
+
+  var paletteTrap = null;
+
+  function openPalette(){
+    paletteLastFocus = document.activeElement;
+    paletteOverlay.classList.add("is-open");
+    paletteOverlay.removeAttribute("aria-hidden");
+    paletteInput.value = "";
+    renderPalette("");
+    paletteInput.focus();
+    /* Belt and braces: if the overlay was still transitioning in, the
+       first focus can be dropped, so re-assert it on the next frame. */
+    window.requestAnimationFrame(function(){
+      if (!paletteOverlay.contains(document.activeElement)) paletteInput.focus();
+    });
+
+    /* Keep Tab inside the dialog. Escape and the arrow keys are handled
+       by the document-level handler below. */
+    paletteTrap = function(e){
+      if (e.key !== "Tab") return;
+      var items = Array.prototype.slice.call(
+        paletteOverlay.querySelectorAll("input, button")
+      ).filter(function(el){ return el.offsetParent !== null; });
+      if (!items.length){ e.preventDefault(); return; }
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first){
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last){
+        e.preventDefault(); first.focus();
+      } else if (!paletteOverlay.contains(document.activeElement)){
+        e.preventDefault(); first.focus();
+      }
+    };
+    document.addEventListener("keydown", paletteTrap, true);
+  }
+
+  function closePalette(){
+    if (!paletteOverlay.classList.contains("is-open")) return;
+    paletteOverlay.classList.remove("is-open");
+    paletteOverlay.setAttribute("aria-hidden", "true");
+    if (paletteTrap){
+      document.removeEventListener("keydown", paletteTrap, true);
+      paletteTrap = null;
+    }
+    if (paletteLastFocus && paletteLastFocus.focus) paletteLastFocus.focus();
+  }
+
+  paletteTrigger.addEventListener("click", openPalette);
+  paletteOverlay.addEventListener("click", function(e){ if (e.target === paletteOverlay) closePalette(); });
+  paletteInput.addEventListener("input", function(){ renderPalette(paletteInput.value); });
+
+  document.addEventListener("keydown", function(e){
+    var mod = e.metaKey || e.ctrlKey;
+    if (mod && e.key.toLowerCase() === "k"){
+      e.preventDefault();
+      paletteOverlay.classList.contains("is-open") ? closePalette() : openPalette();
+      return;
+    }
+    if (!paletteOverlay.classList.contains("is-open")) return;
+    var buttons = Array.prototype.slice.call(paletteListEl.querySelectorAll("button"));
+    if (e.key === "Escape"){ closePalette(); }
+    else if (e.key === "ArrowDown"){
+      e.preventDefault();
+      if (!buttons.length) return;
+      activeIndex = (activeIndex + 1) % buttons.length;
+      buttons.forEach(function(b, i){ b.classList.toggle("is-active", i === activeIndex); });
+      buttons[activeIndex].scrollIntoView({ block: "nearest" });
+    } else if (e.key === "ArrowUp"){
+      e.preventDefault();
+      if (!buttons.length) return;
+      activeIndex = (activeIndex - 1 + buttons.length) % buttons.length;
+      buttons.forEach(function(b, i){ b.classList.toggle("is-active", i === activeIndex); });
+      buttons[activeIndex].scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Enter"){
+      if (activeIndex > -1 && buttons[activeIndex]) buttons[activeIndex].click();
+    }
+  });
+
+})();
+</script>
+<script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

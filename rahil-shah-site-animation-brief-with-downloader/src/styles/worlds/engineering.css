@@ -1,0 +1,263 @@
+/* ============================================================
+   ENGINEERING — "THE WORKSHOP"
+   A drawing sheet. Blueprint grid, construction lines that draw
+   themselves, dimension marks, a title block.
+
+   All draw-on animation relies on pathLength="1" set in the JSX,
+   so every stroke normalises to the same length and one rule
+   animates all of them.
+   ============================================================ */
+
+.bp {
+  position: relative;
+  border: var(--rule) solid var(--line);
+  background: #0B0C0E;
+  padding: var(--space-lg);
+}
+
+/* ── Sheet ─────────────────────────────────────────────────── */
+
+.bp-sheet {
+  position: relative;
+  /* Two grids: fine tick grid, coarse major grid. */
+  background-image:
+    linear-gradient(rgba(110, 130, 150, 0.07) var(--rule), transparent var(--rule)),
+    linear-gradient(90deg, rgba(110, 130, 150, 0.07) var(--rule), transparent var(--rule)),
+    linear-gradient(rgba(110, 130, 150, 0.13) var(--rule), transparent var(--rule)),
+    linear-gradient(90deg, rgba(110, 130, 150, 0.13) var(--rule), transparent var(--rule));
+  background-size:
+    var(--grid-fine) var(--grid-fine),
+    var(--grid-fine) var(--grid-fine),
+    var(--grid-coarse) var(--grid-coarse),
+    var(--grid-coarse) var(--grid-coarse);
+  border: var(--rule) solid var(--line);
+}
+
+.bp-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Registration crosshairs at opposite corners. */
+.bp-reg {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+.bp-reg::before,
+.bp-reg::after {
+  content: "";
+  position: absolute;
+  background: var(--vermilion);
+  opacity: 0.5;
+}
+.bp-reg::before { left: 50%; top: 0; bottom: 0; width: var(--rule); }
+.bp-reg::after { top: 50%; left: 0; right: 0; height: var(--rule); }
+.bp-reg-tl { left: 10px; top: 10px; }
+.bp-reg-br { right: 10px; bottom: 10px; }
+
+/* ── Drawn geometry ─────────────────────────────────────────────
+   One animation for every stroke, thanks to pathLength="1".
+   ─────────────────────────────────────────────────────────── */
+
+.bp-path {
+  fill: none;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+  transition: stroke-dashoffset var(--dur-slow) var(--ease-emphasis) var(--draw-delay, 0ms);
+}
+.bp-path.is-drawn { stroke-dashoffset: 0; }
+
+/* Line weights and styles, following drafting convention. */
+.bp-line { stroke: var(--paper-dim); stroke-width: 1; }
+.bp-solid { stroke: var(--paper); stroke-width: 1.4; }
+.bp-construction {
+  stroke: rgba(139, 132, 116, 0.55);
+  stroke-width: 0.7;
+  stroke-dasharray: 0.02 0.012;
+}
+.bp-construction.is-drawn { stroke-dashoffset: 0; }
+.bp-centre {
+  stroke: var(--vermilion);
+  stroke-width: 0.7;
+  opacity: 0.75;
+}
+.bp-hidden {
+  stroke: var(--paper-faint);
+  stroke-width: 0.7;
+  stroke-dasharray: 0.03 0.02;
+}
+.bp-hidden.is-drawn { stroke-dashoffset: 0; }
+.bp-dim { stroke: var(--amber-bright); stroke-width: 0.7; }
+.bp-leader { stroke: var(--amber); stroke-width: 0.7; }
+.bp-revision {
+  stroke: var(--vermilion-bright);
+  stroke-width: 0.8;
+  stroke-dasharray: 0.02 0.014;
+}
+.bp-revision.is-drawn { stroke-dashoffset: 0; }
+.bp-arrow-head { fill: var(--amber); }
+/* Section line: heavier than a dimension, per drafting convention. */
+.bp-section { stroke: var(--paper-dim); stroke-width: 1.2; }
+.bp-section.is-drawn { stroke-dashoffset: 0; }
+
+.bp-border {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 0.6;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ── Sheet lettering ────────────────────────────────────────── */
+
+.bp-title-key,
+.bp-title-val,
+.bp-note,
+.bp-rev,
+.bp-dim-text {
+  font-family: var(--font-mono);
+  fill: var(--paper-faint);
+}
+.bp-title-key { font-size: 3px; letter-spacing: 0.2px; }
+.bp-title-val { font-size: 3px; fill: var(--paper-dim); }
+.bp-note { font-size: 3.4px; fill: var(--amber-bright); letter-spacing: 0.2px; }
+.bp-rev { font-size: 3.4px; fill: var(--vermilion-bright); letter-spacing: 0.3px; }
+.bp-dim-text { font-size: 4px; fill: var(--amber-bright); text-anchor: middle; }
+.bp-sec { font-family: var(--font-mono); font-size: 3.6px; fill: var(--paper-dim); text-anchor: middle; }
+.bp-datum { font-family: var(--font-mono); font-size: 3.2px; fill: var(--vermilion-bright); text-anchor: middle; }
+.bp-revno { font-family: var(--font-mono); font-size: 3.2px; fill: var(--vermilion-bright); text-anchor: middle; }
+
+/* Annotations fade in behind the geometry that supports them. */
+.bp-anno {
+  opacity: 0;
+  transition: opacity var(--dur-normal) var(--ease-standard) 520ms;
+}
+.bp-anno.is-drawn { opacity: 1; }
+
+/* ── Process rail ───────────────────────────────────────────── */
+
+.bp-rail {
+  display: flex;
+  gap: 0;
+  margin-top: var(--space-lg);
+  border-top: var(--rule) solid var(--line);
+}
+
+.bp-step {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3xs);
+  padding: var(--space-sm) var(--space-xs) var(--space-md);
+  border-right: var(--rule) solid var(--line);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-quick) var(--ease-standard),
+    color var(--dur-quick) var(--ease-standard);
+}
+.bp-step:last-child { border-right: 0; }
+.bp-step:hover { background: rgba(243, 238, 227, 0.03); }
+
+.bp-step-no {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  color: var(--paper-faint);
+}
+.bp-step-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--paper-faint);
+  transition: color var(--dur-quick) var(--ease-standard);
+}
+
+/* The rule under each step fills as the drawing reaches it. */
+.bp-step-rule {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 100%;
+  background: var(--vermilion-bright);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-slow) var(--ease-emphasis);
+}
+.bp-step.is-done .bp-step-rule { transform: scaleX(1); background: var(--line-strong); }
+.bp-step.is-current .bp-step-rule { transform: scaleX(1); }
+.bp-step.is-current .bp-step-label { color: var(--paper); }
+.bp-step.is-current .bp-step-no { color: var(--vermilion-bright); }
+
+/* ── Readout ────────────────────────────────────────────────── */
+
+.bp-readout {
+  margin-top: var(--space-lg);
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--amber);
+  max-width: 66ch;
+}
+.bp-readout-note { margin-bottom: var(--space-2xs); color: var(--amber-bright); }
+.bp-readout-text {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: 1.62;
+  color: var(--paper-dim);
+  animation: bp-readout-in var(--dur-normal) var(--ease-emphasis) both;
+}
+@keyframes bp-readout-in {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+.bp-foot {
+  margin: var(--space-lg) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+  color: var(--paper-faint);
+  opacity: 0.7;
+  max-width: 70ch;
+}
+
+/* ── Handheld ──────────────────────────────────────────────────
+   The sheet stays (it is the whole point), but the rail becomes a
+   scrollable strip so five stages do not shrink to unreadable.
+   ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 760px) {
+  .bp { padding: var(--space-sm); }
+  .bp-rail {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .bp-rail::-webkit-scrollbar { display: none; }
+  .bp-step { flex: 0 0 34%; padding: var(--space-xs) var(--space-2xs) var(--space-sm); }
+  .bp-readout { padding-left: var(--space-sm); }
+  .bp-reg { display: none; }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────
+   The drawing is presented finished rather than constructing. All
+   geometry and every annotation is visible; only the drawing-on is
+   removed.
+   ─────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-path { transition: none; }
+  .bp-anno { transition: none; }
+  .bp-readout-text { animation: none; }
+  .bp-step-rule { transition: none; }
+}
+html[data-motion="reduced"] .bp-path,
+html[data-motion="reduced"] .bp-anno,
+html[data-motion="reduced"] .bp-step-rule { transition: none; }
+html[data-motion="reduced"] .bp-readout-text { animation: none; }

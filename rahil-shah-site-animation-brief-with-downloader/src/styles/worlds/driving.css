@@ -1,0 +1,92 @@
+/* ============================================================
+   DRIVING — "NIGHT DRIVE"
+   Atmosphere. The canvas carries the scene; everything on top of
+   it is hairline instrumentation that must never look like data.
+   ============================================================ */
+
+.drive {
+  position: relative;
+  border: var(--rule) solid var(--line);
+  background: #07070A;
+  overflow: hidden;
+}
+
+.drive-stage {
+  position: relative;
+  height: clamp(460px, 68vh, 720px);
+}
+
+.drive-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Cockpit geometry ──────────────────────────────────────── */
+
+.drive-cockpit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+/* The A-pillars and roof, punched through to reveal the road. */
+.drive-pillar {
+  fill: rgba(5, 4, 5, 0.72);
+  stroke: none;
+}
+.drive-pillar-edge {
+  fill: none;
+  stroke: rgba(243, 238, 227, 0.14);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ── Plate ─────────────────────────────────────────────────── */
+
+.drive-plate {
+  position: absolute;
+  right: var(--space-lg);
+  top: var(--space-lg);
+  max-width: 290px;
+  text-align: right;
+  pointer-events: none;
+}
+.drive-plate-kicker {
+  margin-bottom: var(--space-xs);
+}
+.drive-plate-voice {
+  margin: 0 0 var(--space-2xs);
+  font-family: var(--font-voice);
+  font-style: italic;
+  font-size: var(--text-lead);
+  color: var(--paper);
+}
+.drive-plate-note {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: 1.55;
+  color: var(--paper-faint);
+}
+
+/* ── Handheld ──────────────────────────────────────────────────
+   The cluster and the plate compete for a narrow screen, so the
+   plate moves below the stage and the cluster shrinks to the arc.
+   ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 760px) {
+  .drive-stage { height: clamp(360px, 54vh, 460px); }
+  .drive-plate {
+    position: relative;
+    inset: auto;
+    max-width: none;
+    text-align: left;
+    padding: var(--space-md) var(--space-sm) var(--space-md);
+    border-top: var(--rule) solid var(--line);
+  }
+}
+
+

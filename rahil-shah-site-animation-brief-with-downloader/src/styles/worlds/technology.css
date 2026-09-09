@@ -1,0 +1,497 @@
+/* ============================================================
+   TECHNOLOGY — "MY AI LAB"
+   A bench, not a card grid. Fine grid surface, nodes that
+   activate as the signal arrives, connectors that carry a beam.
+   ============================================================ */
+
+.lab {
+  position: relative;
+  padding: var(--space-2xl) var(--space-lg) var(--space-xl);
+  border: var(--rule) solid var(--line);
+  background: var(--ink-soft, #131110);
+  overflow: hidden;
+  --lab-px: 50%;
+  --lab-py: 50%;
+}
+
+/* Bench surface — hairline grid, lit where the pointer is. */
+.lab-surface {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--line) var(--rule), transparent var(--rule)),
+    linear-gradient(90deg, var(--line) var(--rule), transparent var(--rule));
+  background-size: var(--grid-coarse) var(--grid-coarse);
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(
+    46% 62% at var(--lab-px) var(--lab-py),
+    #000 0%,
+    rgba(0, 0, 0, 0.28) 58%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    46% 62% at var(--lab-px) var(--lab-py),
+    #000 0%,
+    rgba(0, 0, 0, 0.28) 58%,
+    transparent 100%
+  );
+}
+
+.lab-head {
+  position: relative;
+  margin-bottom: var(--space-xl);
+}
+.lab-head-note {
+  margin: var(--space-2xs) 0 0;
+  font-family: var(--font-voice);
+  font-style: italic;
+  font-size: var(--text-lead);
+  color: var(--paper-dim);
+}
+
+/* ── The rail ───────────────────────────────────────────────── */
+
+.lab-rail {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+/* ── Node ───────────────────────────────────────────────────── */
+
+.lab-node {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2xs);
+  padding: var(--space-md) var(--space-sm) var(--space-md);
+  border: var(--rule) solid var(--line);
+  background: rgba(14, 13, 12, 0.72);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-normal) var(--ease-standard),
+    background-color var(--dur-normal) var(--ease-standard),
+    transform var(--dur-normal) var(--ease-standard);
+}
+.lab-node:hover { border-color: var(--line-strong); }
+
+.lab-node-order {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  color: var(--paper-faint);
+}
+
+.lab-node-core {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin: var(--space-2xs) 0;
+  border: var(--rule) solid var(--line-strong);
+  border-radius: 2px;
+  color: var(--paper-faint);
+  transition:
+    color var(--dur-normal) var(--ease-standard),
+    border-color var(--dur-normal) var(--ease-standard),
+    background-color var(--dur-normal) var(--ease-standard);
+}
+.lab-node-icon { width: 22px; height: 22px; }
+.lab-node-icon svg { width: 100%; height: 100%; }
+
+/* The pulse ring fires only on the node the signal is currently at. */
+.lab-node-pulse {
+  position: absolute;
+  inset: -1px;
+  border: var(--rule) solid var(--vermilion-bright);
+  border-radius: 2px;
+  opacity: 0;
+  transform: scale(1);
+}
+.lab-node.is-live .lab-node-pulse {
+  animation: lab-pulse 1.4s var(--ease-standard) 1;
+}
+@keyframes lab-pulse {
+  0% { opacity: 0.9; transform: scale(1); }
+  70% { opacity: 0; transform: scale(1.5); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+.lab-node-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--paper-dim);
+}
+.lab-node-title {
+  font-size: var(--text-body-sm);
+  line-height: 1.4;
+  color: var(--paper-faint);
+}
+
+/* ── Node activity ─────────────────────────────────────────────
+   Only the live node animates. Each stage animates differently, so the
+   rail reads as a process running rather than as five identical lamps.
+   ─────────────────────────────────────────────────────────── */
+
+.lab-node-activity {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 10px;
+  margin-top: var(--space-3xs);
+  opacity: 0;
+  transition: opacity var(--dur-normal) var(--ease-standard);
+}
+.lab-node.is-live .lab-node-activity,
+.lab-node.is-open .lab-node-activity { opacity: 1; }
+
+/* context — material accumulating into the window */
+.lab-node-activity i {
+  width: 7px; height: 3px;
+  background: var(--paper-faint);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.lab-node.is-live .lab-node-activity i {
+  animation: lab-fill 1.5s var(--ease-standard) both;
+}
+.lab-node-activity i:nth-child(2) { animation-delay: 0.12s !important; }
+.lab-node-activity i:nth-child(3) { animation-delay: 0.24s !important; }
+.lab-node-activity i:nth-child(4) { animation-delay: 0.36s !important; }
+@keyframes lab-fill { to { transform: scaleX(1); } }
+
+/* prompt — the instruction being shaped */
+.lab-node-activity em {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--vermilion-bright);
+}
+.lab-node.is-live .lab-node-activity em {
+  animation: lab-shape 1.5s var(--ease-standard) both;
+}
+@keyframes lab-shape {
+  0% { letter-spacing: 0.5em; opacity: 0; }
+  100% { letter-spacing: 0.14em; opacity: 1; }
+}
+
+/* model — work happening, not a result */
+.lab-node-activity b {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--vermilion-bright) 0 4px, transparent 4px 10px);
+}
+.lab-node.is-live .lab-node-activity b {
+  animation: lab-work 0.7s linear infinite;
+}
+@keyframes lab-work { to { background-position-x: 10px; } }
+
+/* output — the response arriving */
+.lab-node-activity s {
+  display: block;
+  height: 3px;
+  width: 0;
+  background: var(--paper-dim);
+  text-decoration: none;
+}
+.lab-node.is-live .lab-node-activity s {
+  animation: lab-type 1.4s steps(18) both;
+}
+@keyframes lab-type { to { width: 100%; } }
+
+/* iterate — the loop closing */
+.lab-node-activity u {
+  display: block;
+  width: 11px; height: 11px;
+  border: 1px solid var(--vermilion-bright);
+  border-right-color: transparent;
+  border-radius: 50%;
+  text-decoration: none;
+}
+.lab-node.is-live .lab-node-activity u {
+  animation: lab-spin 1.4s linear infinite;
+}
+@keyframes lab-spin { to { transform: rotate(360deg); } }
+
+/* Active state — the node the signal has reached. */
+.lab-node.is-live {
+  border-color: var(--vermilion);
+  background: rgba(198, 64, 46, 0.06);
+}
+.lab-node.is-live .lab-node-core {
+  color: var(--vermilion-bright);
+  border-color: var(--vermilion-bright);
+  background: rgba(198, 64, 46, 0.1);
+}
+.lab-node.is-live .lab-node-label { color: var(--paper); }
+
+/* The node the signal just left keeps a little residual charge. */
+.lab-node.is-trailing .lab-node-core { color: var(--paper-dim); }
+
+/* Pinned by the visitor — outranks the travelling signal. */
+.lab-node.is-open {
+  background: var(--paper);
+  border-color: var(--paper);
+}
+.lab-node.is-open .lab-node-order,
+.lab-node.is-open .lab-node-title { color: rgba(14, 13, 12, 0.62); }
+.lab-node.is-open .lab-node-label { color: var(--ink); }
+.lab-node.is-open .lab-node-core {
+  color: var(--ink);
+  border-color: rgba(14, 13, 12, 0.3);
+  background: transparent;
+}
+
+/* ── Connector ──────────────────────────────────────────────── */
+
+.lab-link {
+  position: relative;
+  flex: 0 0 42px;
+  align-self: center;
+  height: 1px;
+  color: var(--paper-faint);
+}
+.lab-link-track {
+  position: absolute;
+  inset: 0;
+  background: var(--line-strong);
+}
+/* The beam is the signal crossing the wire. */
+.lab-link-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--vermilion-bright),
+    transparent
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+}
+.lab-link.is-live .lab-link-beam {
+  animation: lab-beam var(--dur-slow) var(--ease-emphasis) 1;
+}
+@keyframes lab-beam {
+  0% { transform: scaleX(0); transform-origin: left; opacity: 1; }
+  55% { transform: scaleX(1); transform-origin: left; opacity: 1; }
+  56% { transform: scaleX(1); transform-origin: right; opacity: 1; }
+  100% { transform: scaleX(0); transform-origin: right; opacity: 0; }
+}
+.lab-link-tip {
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+/* ── Return arc ─────────────────────────────────────────────── */
+
+.lab-return {
+  display: block;
+  width: 100%;
+  height: 34px;
+  margin-top: var(--space-2xs);
+}
+.lab-return-path {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  vector-effect: non-scaling-stroke;
+  transition: stroke var(--dur-normal) var(--ease-standard);
+}
+.lab-return-path.is-live { stroke: var(--vermilion-bright); }
+
+.lab-return-label {
+  margin: 0 0 var(--space-xl);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  color: var(--paper-faint);
+  opacity: 0.6;
+}
+
+/* ── Readout ────────────────────────────────────────────────── */
+
+.lab-readout {
+  position: relative;
+  padding: var(--space-md) var(--space-lg);
+  border: var(--rule) solid var(--line);
+  border-left: 2px solid var(--vermilion);
+  background: rgba(14, 13, 12, 0.62);
+}
+.lab-readout-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-2xs);
+}
+.lab-readout-order {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--vermilion-bright);
+}
+.lab-readout-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h4);
+  letter-spacing: 0.01em;
+  color: var(--paper);
+}
+.lab-readout-unpin {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  color: var(--paper-faint);
+  border: var(--rule) solid var(--line);
+  padding: var(--space-3xs) var(--space-2xs);
+  transition:
+    color var(--dur-quick) var(--ease-standard),
+    border-color var(--dur-quick) var(--ease-standard);
+}
+.lab-readout-unpin:hover { color: var(--paper); border-color: var(--paper-faint); }
+
+.lab-readout-summary {
+  margin: 0 0 var(--space-sm);
+  max-width: 62ch;
+  font-size: var(--text-body-sm);
+  line-height: 1.62;
+  color: var(--paper-dim);
+  /* Re-keyed on stage change, so this replays as new text arrives. */
+  animation: lab-readout-in var(--dur-normal) var(--ease-emphasis) both;
+}
+@keyframes lab-readout-in {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+.lab-readout-notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lab-readout-notes li {
+  padding: var(--space-3xs) var(--space-2xs);
+  border: var(--rule) solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  color: var(--paper-faint);
+  animation: lab-note-in var(--dur-normal) var(--ease-standard) both;
+  animation-delay: calc(var(--note-index) * 60ms);
+}
+@keyframes lab-note-in {
+  from { opacity: 0; transform: translate3d(-6px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+.lab-foot {
+  margin: var(--space-md) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+  color: var(--paper-faint);
+  opacity: 0.72;
+}
+.lab-caret {
+  color: var(--vermilion-bright);
+  margin-right: var(--space-3xs);
+  animation: lab-blink 1.2s steps(2) infinite;
+}
+@keyframes lab-blink { 50% { opacity: 0; } }
+
+/* ── Handheld: the loop runs vertically ─────────────────────────
+   Five nodes cannot share a phone's width, and squashing them
+   destroys the sense of a signal travelling. The rail becomes a
+   column and the connectors turn 90°.
+   ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 860px) {
+  .lab { padding: var(--space-xl) var(--space-sm) var(--space-lg); }
+  .lab-rail { flex-direction: column; }
+  .lab-node {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+  }
+  .lab-node-core { margin: 0; flex: none; width: 40px; height: 40px; }
+  .lab-node-order { order: -1; }
+  .lab-node-label { margin-left: auto; }
+  .lab-node-title { flex-basis: 100%; }
+
+  .lab-link {
+    flex: 0 0 26px;
+    width: 1px;
+    height: 26px;
+    align-self: center;
+  }
+  .lab-link-beam {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, var(--vermilion-bright), transparent);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  .lab-link.is-live .lab-link-beam { animation-name: lab-beam-v; }
+  @keyframes lab-beam-v {
+    0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+    55% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+    56% { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+    100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+  }
+  .lab-link-tip { right: -4px; top: auto; bottom: -5px; transform: none; }
+  .lab-readout { padding: var(--space-sm); }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────
+   The loop stops travelling; the diagram and every readout stay
+   fully readable and every node is still clickable.
+   ─────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-node-pulse,
+  .lab-link-beam,
+  .lab-caret { animation: none; }
+  .lab-node-activity { opacity: 1; }
+  .lab-node-activity i { transform: scaleX(1); animation: none; }
+  .lab-node-activity em,
+  .lab-node-activity b,
+  .lab-node-activity s,
+  .lab-node-activity u { animation: none; }
+  .lab-node-activity s { width: 100%; }
+  .lab-readout-summary,
+  .lab-readout-notes li { animation: none; opacity: 1; transform: none; }
+  .lab-surface { -webkit-mask-image: none; mask-image: none; opacity: 0.3; }
+}
+html[data-motion="reduced"] .lab-node-pulse,
+html[data-motion="reduced"] .lab-link-beam,
+html[data-motion="reduced"] .lab-caret { animation: none; }
+html[data-motion="reduced"] .lab-surface { -webkit-mask-image: none; mask-image: none; opacity: 0.3; }

@@ -1,0 +1,212 @@
+/* ============================================================
+   MOTION SYSTEM
+   ------------------------------------------------------------
+   Styles for the primitives in components/motion. Every reveal on
+   the site routes through these classes, so timing is consistent
+   and there is exactly one place to tune it.
+
+   Note: no `transition: all` anywhere in this file, or anywhere
+   else in the project. Transitions name their properties.
+   ============================================================ */
+
+/* ── Reveal ─────────────────────────────────────────────────── */
+
+.mo-reveal {
+  --mo-delay: 0ms;
+}
+
+/* rise — editorial copy lifting into place */
+.mo-rise {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity var(--dur-slow) var(--ease-standard) var(--mo-delay),
+    transform var(--dur-slow) var(--ease-standard) var(--mo-delay);
+}
+.mo-rise.is-in {
+  opacity: 1;
+  transform: none;
+}
+.mo-dir-down.mo-rise { transform: translate3d(0, -22px, 0); }
+.mo-dir-left.mo-rise { transform: translate3d(26px, 0, 0); }
+.mo-dir-right.mo-rise { transform: translate3d(-26px, 0, 0); }
+
+/*
+  clip — a wipe. The content is uncovered rather than faded, which
+  reads as material moving rather than opacity changing. The slight
+  translate keeps it from feeling like a shutter.
+*/
+.mo-clip {
+  clip-path: inset(0 100% 0 0);
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition:
+    clip-path var(--dur-slow) var(--ease-emphasis) var(--mo-delay),
+    opacity var(--dur-normal) var(--ease-standard) var(--mo-delay),
+    transform var(--dur-slow) var(--ease-emphasis) var(--mo-delay);
+}
+.mo-clip.is-in {
+  clip-path: inset(0 0 0 0);
+  opacity: 1;
+  transform: none;
+}
+.mo-dir-down.mo-clip { clip-path: inset(0 0 100% 0); }
+.mo-dir-right.mo-clip { clip-path: inset(0 0 0 100%); }
+
+/* line — a technical rule drawing itself from its origin */
+.mo-line-reveal,
+.mo-reveal.mo-line {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-slow) var(--ease-emphasis) var(--mo-delay);
+}
+.mo-reveal.mo-line.is-in {
+  transform: scaleX(1);
+}
+
+/* frame — a bordered panel assembling from its corner */
+.mo-frame {
+  opacity: 0;
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  transition:
+    opacity var(--dur-normal) var(--ease-standard) var(--mo-delay),
+    clip-path var(--dur-scene) var(--ease-emphasis) var(--mo-delay);
+}
+.mo-frame.is-in {
+  opacity: 1;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* ── Stagger ────────────────────────────────────────────────── */
+
+.mo-stagger > .mo-reveal {
+  /* The wrapper must not create a new formatting context that
+     breaks the parent's layout (grid/flex children stay direct). */
+  display: contents;
+}
+/* When the wrapper needs to be a real box (transforms require it),
+   opt in with this modifier on the Stagger element. */
+.mo-stagger-boxed > .mo-reveal {
+  display: block;
+}
+
+/* ── TextReveal ─────────────────────────────────────────────── */
+
+.mo-text .mo-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Leaves room for descenders so 'g' and 'y' are not clipped. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.mo-text .mo-word-inner {
+  display: inline-block;
+  transform: translate3d(0, 108%, 0);
+  transition: transform var(--dur-slow) var(--ease-emphasis) var(--mo-delay);
+}
+.mo-text.is-in .mo-word-inner {
+  transform: none;
+}
+
+/* ── LineDraw ───────────────────────────────────────────────── */
+
+.mo-line {
+  vector-effect: non-scaling-stroke;
+}
+
+/* ── Magnetic ───────────────────────────────────────────────── */
+
+.mo-magnetic {
+  transition: transform var(--dur-normal) var(--ease-spring-soft);
+  will-change: transform;
+}
+/* While the pointer is driving it, the inline transform updates every
+   frame — a transition there would fight the frame loop and lag. */
+.mo-magnetic:hover {
+  transition: none;
+}
+
+/* ── Shared technical marks ─────────────────────────────────── */
+
+.mo-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--paper-faint);
+  margin: 0;
+}
+.mo-label-accent { color: var(--vermilion-bright); }
+.mo-label-dim { color: var(--paper-faint); opacity: 0.6; }
+.mo-label-bright { color: var(--paper-dim); }
+
+.mo-index {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--paper-faint);
+  margin: 0;
+}
+.mo-index i {
+  font-style: normal;
+  margin: 0 var(--space-2xs);
+  opacity: 0.34;
+}
+.mo-index-total { opacity: 0.62; }
+
+/* ── Reduced motion ─────────────────────────────────────────────
+   Content must never be hidden behind a disabled animation. Every
+   reveal resolves to its final state immediately; nothing is left
+   at opacity 0 or clipped away.
+   ───────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .mo-rise,
+  .mo-clip,
+  .mo-frame,
+  .mo-reveal.mo-line {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+  .mo-text .mo-word-inner { transform: none; transition: none; }
+  .mo-magnetic { transition: none; }
+}
+
+html[data-motion="reduced"] .mo-rise,
+html[data-motion="reduced"] .mo-clip,
+html[data-motion="reduced"] .mo-frame,
+html[data-motion="reduced"] .mo-reveal.mo-line {
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}
+html[data-motion="reduced"] .mo-text .mo-word-inner { transform: none; }
+
+/* The explicit "full motion" override must undo the OS media query
+   above, or a visitor who opts back in stays stuck with no motion. */
+html[data-motion="full"] .mo-rise {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity var(--dur-slow) var(--ease-standard) var(--mo-delay),
+    transform var(--dur-slow) var(--ease-standard) var(--mo-delay);
+}
+html[data-motion="full"] .mo-rise.is-in { opacity: 1; transform: none; }
+
+html[data-motion="full"] .mo-clip {
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transition:
+    clip-path var(--dur-slow) var(--ease-emphasis) var(--mo-delay),
+    opacity var(--dur-normal) var(--ease-standard) var(--mo-delay);
+}
+html[data-motion="full"] .mo-clip.is-in { opacity: 1; clip-path: inset(0 0 0 0); }
+
+html[data-motion="full"] .mo-text .mo-word-inner {
+  transform: translate3d(0, 108%, 0);
+  transition: transform var(--dur-slow) var(--ease-emphasis) var(--mo-delay);
+}
+html[data-motion="full"] .mo-text.is-in .mo-word-inner { transform: none; }

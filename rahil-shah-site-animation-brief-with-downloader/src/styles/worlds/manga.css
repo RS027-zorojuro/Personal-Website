@@ -1,0 +1,536 @@
+/* ============================================================
+   MANGA — "THE ARCHIVE"
+   Paper, ink, halftone and shelf depth. The books are objects
+   standing on a board, seen slightly from the left, so the page
+   block of each one is visible along its edge.
+   ============================================================ */
+
+.archive {
+  position: relative;
+  padding: var(--space-xl) 0 var(--space-lg);
+}
+
+/* ── Head ──────────────────────────────────────────────────── */
+
+.archive-head { margin-bottom: var(--space-md); }
+.archive-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin: var(--space-2xs) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.04em;
+  color: var(--paper-dim);
+}
+.archive-stats i { font-style: normal; opacity: 0.3; }
+
+/* ── Filters ───────────────────────────────────────────────── */
+
+.archive-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3xs);
+  margin-bottom: var(--space-xl);
+  border-bottom: var(--rule) solid var(--line);
+  padding-bottom: var(--space-sm);
+}
+.archive-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-2xs) var(--space-sm);
+  border: var(--rule) solid var(--line);
+  background: transparent;
+  color: var(--paper-faint);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  cursor: pointer;
+  transition:
+    color var(--dur-quick) var(--ease-standard),
+    border-color var(--dur-quick) var(--ease-standard),
+    background-color var(--dur-quick) var(--ease-standard);
+}
+.archive-filter:hover { color: var(--paper); border-color: var(--line-strong); }
+.archive-filter.is-active {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--ink);
+}
+.archive-filter-count {
+  font-size: var(--text-micro);
+  opacity: 0.55;
+}
+
+/* ── Shelf ─────────────────────────────────────────────────────
+   perspective on the wrapper, so every book shares one vanishing
+   point rather than each having its own.
+   ─────────────────────────────────────────────────────────── */
+
+.archive-shelf-wrap {
+  position: relative;
+  perspective: 1400px;
+  perspective-origin: 50% 40%;
+  padding: var(--space-lg) 0 0;
+}
+
+.archive-shelf {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  min-height: 300px;
+  padding: 0 var(--space-xs) 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  transform-style: preserve-3d;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.archive-shelf::-webkit-scrollbar { height: 3px; }
+.archive-shelf::-webkit-scrollbar-thumb { background: var(--line-strong); }
+
+/* The board the books stand on — a hairline plus its shadow. */
+.archive-board {
+  position: relative;
+  height: 3px;
+  margin-top: -1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--line-strong) 6%,
+    var(--line-strong) 94%,
+    transparent
+  );
+}
+.archive-board::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 46px;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), transparent);
+}
+
+/* ── Book ──────────────────────────────────────────────────────
+   Each book is a spine plus a cover rotated back into the shelf.
+   Hovering rotates the cover toward the reader and lifts the book;
+   --dx is written by JS to push neighbours aside.
+   ─────────────────────────────────────────────────────────── */
+
+.shelf-book {
+  --dx: 0px;
+  --near: 0;
+  --accent: var(--steel);
+
+  position: relative;
+  flex: 0 0 auto;
+  /* A tankobon spine reads thicker than this was. Cover width is set to
+     height x 2/3 so a real 2:3 cover fills it without cropping. */
+  width: 54px;
+  height: 262px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform: translate3d(var(--dx), 0, 0);
+  /* Slower and softer than the previous snap: a book being drawn out
+     has weight, and the cover swing needs time to read. */
+  transition:
+    transform 480ms var(--ease-emphasis),
+    width 480ms var(--ease-emphasis);
+}
+.shelf-book[data-accent="vermilion"] { --accent: var(--vermilion); }
+.shelf-book[data-accent="amber"] { --accent: var(--amber); }
+.shelf-book[data-accent="crimson"] { --accent: var(--crimson); }
+.shelf-book[data-accent="steel"] { --accent: var(--steel); }
+
+/* Spine — the default face. */
+.shelf-spine {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-2xs) 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.45) 0%,
+      transparent 22%,
+      transparent 70%,
+      rgba(0, 0, 0, 0.5) 100%
+    ),
+    linear-gradient(180deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 62%, #0B0A09) 100%);
+  border: var(--rule) solid rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(243, 238, 227, 0.06);
+  transition: opacity var(--dur-normal) var(--ease-standard);
+}
+/* Head/tail bands, the way a printed spine has them. */
+.shelf-spine-head {
+  width: 100%;
+  height: 14px;
+  background: rgba(243, 238, 227, 0.14);
+  border-bottom: var(--rule) solid rgba(0, 0, 0, 0.4);
+  flex: none;
+}
+.shelf-spine-title {
+  flex: 1;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: var(--space-2xs) 0;
+}
+.shelf-spine-mark {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  color: rgba(243, 238, 227, 0.7);
+}
+
+/* Cover — hinged on the spine, rotated back until the book is picked. */
+.shelf-cover {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: left center;
+  transform: rotateY(-88deg);
+  opacity: 0;
+  background: var(--charcoal);
+  border: var(--rule) solid rgba(0, 0, 0, 0.55);
+  transition:
+    transform 520ms var(--ease-emphasis),
+    opacity 260ms var(--ease-standard);
+}
+.shelf-cover img {
+  width: 100%;
+  height: 100%;
+  /* Manga covers are never cropped; the plate is already 2:3 so a
+     correctly-proportioned cover fills it edge to edge anyway. */
+  object-fit: contain;
+  background: #0C0A09;
+}
+.shelf-cover-typeset {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: var(--space-2xs);
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--accent) 34%, #16110F), #100D0C);
+}
+.shelf-cover-mark {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--paper);
+}
+.shelf-cover-title {
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: var(--paper-dim);
+}
+/* Halftone — the manga print texture, kept very low. */
+.shelf-cover-halftone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    rgba(243, 238, 227, 0.14) 0.5px,
+    transparent 0.6px
+  );
+  background-size: 4px 4px;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+}
+
+/* Page block along the fore edge — this is what reads as "a book". */
+.shelf-pages {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  right: -5px;
+  width: 6px;
+  transform: rotateY(52deg);
+  transform-origin: left center;
+  background: repeating-linear-gradient(
+    90deg,
+    #CFC7B4 0 1px,
+    #9C9584 1px 2px
+  );
+  opacity: 0.5;
+  border-radius: 0 1px 1px 0;
+  transition: opacity var(--dur-normal) var(--ease-standard);
+}
+
+/* ── Picked up ─────────────────────────────────────────────── */
+
+.shelf-book:hover,
+.shelf-book:focus-visible {
+  width: 175px;           /* 262 x 2/3 -> a true cover plate */
+  transform: translate3d(var(--dx), -26px, 70px);
+  z-index: var(--z-raised);
+}
+.shelf-book:hover .shelf-cover,
+.shelf-book:focus-visible .shelf-cover {
+  transform: rotateY(0deg);
+  opacity: 1;
+}
+.shelf-book:hover .shelf-spine,
+.shelf-book:focus-visible .shelf-spine { opacity: 0; }
+.shelf-book:hover .shelf-pages,
+.shelf-book:focus-visible .shelf-pages { opacity: 0.85; }
+
+/* Selected — the book leaves the shelf. */
+.shelf-book.is-pulled {
+  transform: translate3d(var(--dx), -42px, 110px);
+}
+
+/* ── Foot ──────────────────────────────────────────────────── */
+
+.archive-foot {
+  margin: var(--space-xl) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  line-height: 1.7;
+  letter-spacing: 0.05em;
+  color: var(--paper-faint);
+  opacity: 0.72;
+  max-width: 72ch;
+}
+
+/* ── Opened book (dialog) ──────────────────────────────────── */
+
+.archive-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-dialog);
+  display: grid;
+  place-items: center;
+  padding: var(--space-md);
+  background: var(--overlay-scrim);
+  backdrop-filter: blur(var(--blur-scrim));
+  animation: archive-scrim-in var(--dur-quick) var(--ease-standard) both;
+}
+@keyframes archive-scrim-in { from { opacity: 0; } to { opacity: 1; } }
+
+.openbook {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) 10px minmax(0, 1fr);
+  width: min(880px, 100%);
+  max-height: min(560px, 88vh);
+  background: #14100E;
+  border: var(--rule) solid var(--line-strong);
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.9);
+  /* Opens like a book: rotates flat from a slight angle. */
+  transform-origin: center left;
+  animation: openbook-in var(--dur-slow) var(--ease-emphasis) both;
+}
+@keyframes openbook-in {
+  from { opacity: 0; transform: perspective(1400px) rotateY(-22deg) translate3d(-20px, 0, 0); }
+  to { opacity: 1; transform: perspective(1400px) rotateY(0) translate3d(0, 0, 0); }
+}
+
+.openbook-leaf { position: relative; overflow: hidden; }
+.openbook-left { --accent: var(--steel); background: #0F0C0B; }
+.openbook-left[data-accent="vermilion"] { --accent: var(--vermilion); }
+.openbook-left[data-accent="amber"] { --accent: var(--amber); }
+.openbook-left[data-accent="crimson"] { --accent: var(--crimson); }
+.openbook-left[data-accent="steel"] { --accent: var(--steel); }
+
+/* The opened cover is the artwork — show all of it, on its own ground. */
+.openbook-art {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #0B0908;
+}
+.openbook-typeset {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 300px;
+  padding: var(--space-lg);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 40%, #16110F), #0D0B0A);
+}
+.openbook-mark {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 5rem);
+  line-height: 0.9;
+  color: var(--paper);
+}
+.openbook-imprint {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  color: var(--paper-faint);
+}
+.openbook-halftone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(243, 238, 227, 0.16) 0.6px, transparent 0.7px);
+  background-size: 5px 5px;
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+}
+
+/* The gutter — paper curving into the spine. */
+.openbook-gutter {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.62),
+    rgba(0, 0, 0, 0.2) 40%,
+    rgba(0, 0, 0, 0.2) 60%,
+    rgba(0, 0, 0, 0.62)
+  );
+}
+
+.openbook-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  overflow-y: auto;
+  background:
+    radial-gradient(120% 100% at 0% 50%, rgba(0, 0, 0, 0.4), transparent 30%),
+    #16120F;
+}
+.openbook-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: 0.98;
+  color: var(--paper);
+}
+
+.openbook-record {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  margin: 0;
+  padding: var(--space-sm) 0;
+  border-top: var(--rule) solid var(--line);
+  border-bottom: var(--rule) solid var(--line);
+}
+.openbook-record dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  color: var(--paper-faint);
+  margin-bottom: var(--space-3xs);
+}
+.openbook-record dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--paper);
+}
+.openbook-record dd.is-reading { color: var(--amber-bright); }
+.openbook-record dd.is-completed { color: var(--steel); }
+.openbook-record dd.is-bookmarked { color: var(--paper-dim); }
+
+.openbook-note {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: 1.6;
+  color: var(--paper-faint);
+}
+
+.openbook-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-top: auto;
+  padding-top: var(--space-sm);
+}
+.openbook-step,
+.openbook-close {
+  padding: var(--space-2xs) var(--space-sm);
+  border: var(--rule) solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--paper-dim);
+  cursor: pointer;
+  transition:
+    color var(--dur-quick) var(--ease-standard),
+    background-color var(--dur-quick) var(--ease-standard),
+    border-color var(--dur-quick) var(--ease-standard);
+}
+.openbook-step:hover,
+.openbook-close:hover {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--ink);
+}
+.openbook-close { margin-left: auto; }
+
+/* ── Handheld ──────────────────────────────────────────────────
+   A 3D shelf is a pointer idea. On touch it becomes a swipeable
+   rail of covers with snap, and the opened book stacks vertically.
+   ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 860px) {
+  .archive-shelf-wrap { perspective: none; padding-top: var(--space-md); }
+  .archive-shelf {
+    gap: var(--space-2xs);
+    min-height: 0;
+    padding-bottom: var(--space-sm);
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .shelf-book {
+    width: 116px;
+    height: 174px;
+    scroll-snap-align: center;
+    transform: none;
+  }
+  /* No hover on touch — the cover is the resting state. */
+  .shelf-spine { display: none; }
+  .shelf-cover { transform: none; opacity: 1; }
+  .shelf-pages { display: none; }
+  .shelf-book:hover,
+  .shelf-book:focus-visible { width: 116px; transform: none; }
+  .shelf-book.is-pulled { transform: none; outline: 2px solid var(--vermilion-bright); outline-offset: 2px; }
+
+  .openbook {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 200px) 0 minmax(0, 1fr);
+    max-height: 90vh;
+  }
+  .openbook-gutter { display: none; }
+  .openbook-typeset { min-height: 0; padding: var(--space-md); }
+  .openbook-right { padding: var(--space-md); }
+}
+
+/* ── Reduced motion ────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .shelf-book,
+  .shelf-cover,
+  .shelf-spine,
+  .shelf-pages { transition: none; }
+  .openbook { animation: none; }
+  .archive-scrim { animation: none; }
+}
+html[data-motion="reduced"] .shelf-book,
+html[data-motion="reduced"] .shelf-cover { transition: none; }
+html[data-motion="reduced"] .openbook,
+html[data-motion="reduced"] .archive-scrim { animation: none; }
